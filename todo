@@ -1,0 +1,6 @@
+tradx__price -> database (bleibt)
+aktuelle tabelle tradx_price wird zu schema tradx_price.stock
+neue schema tradx_index 
+neue tabelle tradx_index.index -> indexe
+neue schema tradx_fx
+neue table tradx_fx.rates

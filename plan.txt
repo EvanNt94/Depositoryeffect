@@ -1,0 +1,31 @@
+# III
+0. live
+1. backtest analysis
+2. strategy 
+3. model für strategy
+4. wie kombinieren wir strats 
+5. OOP für dbs (klassen)
+# II
+1. Trading ability 
+2. functionality modell 
+3. Eval Rechnung (beeinflussung)
+4. Simulation (KPIs)
+5. KPI implementieren 
+# I (alle daten da)
+1. KPI bestimmen 
+2. Daten -> (2.1 Daten speichern
+    2.2. modell low level
+    2.3. Daten sammeln
+    2.4. Datentypen) ->
+
+
+Ziel:
+    KPIs 
+Voraussetzungen:
+    Daten
+
+
+Ziel: 
+    Datenbanken haben und scraper
+Voraussetzungen:
+    alle Stock exchanges

@@ -1,0 +1,18 @@
+import pandas as pd
+from stockexchange.fetch_stock.StockFetcher import StockFetcher
+
+
+class Strategy:
+    def __init__(self):
+        pass
+
+    def set_StockFetcher(self, stockFetcher: StockFetcher):
+        self.stockFetcher = stockFetcher
+
+    def generate_signals(self) -> pd.DataFrame:
+        raise NotImplementedError(
+            "Bitte generate_signals() in Subklasse implementieren."
+        )
+
+    def sort_stocks(self, start_date, df):
+        print("in sort stocks")

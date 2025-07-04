@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = ">=1.5.0"
+yfinance = ">=0.2.18"
+pytest = ">=7.4.0"
+pytest-cov = ">=4.1.0"
+paddleocr = ">=2.9.1"
+py-vollib = ">=1.0.1"
+psycopg = {extras = ["pool"], version = ">=3.2.6"}
+python-dotenv = "==1.1.0"
+langdetect = ">=1.0.9"
+asyncpg = ">=0.30.0"
+feedparser = ">=6.0.11"
+llama-cpp-python = "*"
+torch = ">=2.7.1"
+matplotlib = "*"
+tkcalendar = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
