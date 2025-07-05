@@ -15,14 +15,14 @@ class Parameter:
         self.frequency = frequency
         self.strategy = strategy
         # Prüfen, ob anzahlAktien ein int ist, sonst auf 1 setzen
-        if not isinstance(anzahlAktien, int):
+        if not isinstance(int (anzahlAktien), int):
             self.anzahlAktien = 3
         else:
-            self.anzahlAktien = anzahlAktien
-        if not isinstance(amount, int):
+            self.anzahlAktien = int (anzahlAktien)
+        if not isinstance(int (amount), int):
             self.amount = 1000
         else:
-            self.amount = amount
+            self.amount = int (amount)
         self.dispoGrenze = dispoGrenze
 
     def toString(self):

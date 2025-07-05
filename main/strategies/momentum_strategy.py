@@ -7,7 +7,7 @@ class MomentumStrategy(Strategy):
 
     def __init__(self):
         super().__init__()
-        self.momentum_days = 180
+        self.momentum_days = 30
 
     def generate_signals(self) -> pd.DataFrame:
         df = self.data.copy()
