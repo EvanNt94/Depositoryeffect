@@ -7,7 +7,7 @@ class MomentumStrategy(Strategy):
 
     def __init__(self):
         super().__init__()
-        self.momentum_days = 1
+        self.momentum_days = 180
 
     def generate_signals(self) -> pd.DataFrame:
         df = self.data.copy()
@@ -66,3 +66,6 @@ class MomentumStrategy(Strategy):
         )
 
         return concatiniert_ergebnis
+
+    def sort_df(self, df):
+        return df.sort_values(by="Momentum", ascending=False).copy()

@@ -16,3 +16,6 @@ class Strategy:
 
     def sort_stocks(self, start_date, df):
         print("in sort stocks")
+
+    def sort_df(self, df):
+        pass

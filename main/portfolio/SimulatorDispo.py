@@ -16,7 +16,6 @@ class SimulatorDispo(Simulator):
     ):
         super().__init__(fetchStock, strategy, parameter, portfolio)
 
-
     def get_ticker_with_loss(self, last_stocks, data, actual_pos):
         """
         Gibt eine Liste von Ticker-Symbolen zurück, die einen Kursverlust aufweisen.
@@ -29,9 +28,6 @@ class SimulatorDispo(Simulator):
             ):
                 ticker_with_loss.append(invest["ticker"])
         return ticker_with_loss
-
-
-    
 
     def simulate(self):
         print("Start Simulation")

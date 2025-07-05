@@ -1,5 +1,6 @@
 import pandas as pd
 from portfolio.Portfolio import Portfolio
+from Logger import Logger
 
 
 class Portfoliodispo(Portfolio):
@@ -12,6 +13,7 @@ class Portfoliodispo(Portfolio):
         self.non_selled_invests = []
         self.anzahl_aktien = anzahl_aktien
         self.stocks_in_loss = []
+        self.logger = Logger(__name__).logger
 
     def simulate_trading(self, df, df_full, date):
         if self.first_buy:
@@ -40,8 +42,20 @@ class Portfoliodispo(Portfolio):
         invest_list = last_value["invest"]
         free_amount = 0
         current_amount_value = self.get_current_amount(df_full, invest_list, date)
+        self.current_amount_value = current_amount_value
         self.current_amount[date.strftime("%Y-%m-%d")] = current_amount_value
         last_value["selled_amount"] = current_amount_value
+        dropped_table = False
+
+        self.logger.info(
+            f"""
+                         Date: {date}
+                         Buy: {last_value["amount_buy"]}
+                         Sell: {last_value["selled_amount"]}
+
+                         """
+        )
+
         new_invest_list = []
         df_adjusted = df.copy()
 
@@ -57,7 +71,7 @@ class Portfoliodispo(Portfolio):
                 price_ticker_today * previous_invest["shares"] / current_amount_value
             )
 
-            # Aktie wird verkauft
+            # Aktie wird ganz verkauft
             if ticker not in list(df.index):
                 amount_selled = self.sell_old_stock(previous_invest, df_full, date)
                 previous_invest["selled_amount"] = amount_selled
@@ -73,13 +87,25 @@ class Portfoliodispo(Portfolio):
                         aktien_darf_nicht_verkauft_werden.append(previous_invest.copy())
                     # Aktie wird gekauft
                     else:
-                        aktien_dürfen_unter_oder_übergewichtet_werden.append(
-                            previous_invest.copy()
-                        )
+                        dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
+                        if dif_weight > 0:
+                            aktien_dürfen_unter_oder_übergewichtet_werden.append(
+                                {"invest": previous_invest.copy(), "gewicht": 1}
+                            )
+                        else:
+                            aktien_dürfen_unter_oder_übergewichtet_werden.append(
+                                {"invest": previous_invest.copy(), "gewicht": -1}
+                            )
                 else:
-                    aktien_dürfen_unter_oder_übergewichtet_werden.append(
-                        previous_invest.copy()
-                    )
+                    dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
+                    if dif_weight > 0:
+                        aktien_dürfen_unter_oder_übergewichtet_werden.append(
+                            {"invest": previous_invest.copy(), "gewicht": 1}
+                        )
+                    else:
+                        aktien_dürfen_unter_oder_übergewichtet_werden.append(
+                            {"invest": previous_invest.copy(), "gewicht": -1}
+                        )
 
         # Behalte Aktien im Minus
         for aktie_darf_nicht_verkauft_werden in aktien_darf_nicht_verkauft_werden:
@@ -93,6 +119,7 @@ class Portfoliodispo(Portfolio):
                 "amount": amount_to_invest,
                 "shares": shares,
                 "price_buy": price_ticker,
+                "price_actual": price_ticker,
                 "weight": weight_ticker,
                 "initial_price_buy": aktie_darf_nicht_verkauft_werden[
                     "initial_price_buy"
@@ -100,30 +127,73 @@ class Portfoliodispo(Portfolio):
             }
             new_invest_list.append(new_invest)
             df_adjusted.drop(ticker, inplace=True)
+            dropped_table = True
+            current_amount_value -= amount_to_invest
 
         self.update_weight(df_adjusted)
         print(df_adjusted)
 
-        for (
-            aktie_darf_unter_oder_übergewichtet_werden
-        ) in aktien_dürfen_unter_oder_übergewichtet_werden:
-            ticker = aktie_darf_unter_oder_übergewichtet_werden["ticker"]
-            initial_price_buy = aktie_darf_unter_oder_übergewichtet_werden[
-                "initial_price_buy"
-            ]
+        alle_aktien_untergewichten = list(
+            map(
+                lambda x: x["invest"],
+                filter(
+                    lambda x: x["gewicht"] == -1,
+                    aktien_dürfen_unter_oder_übergewichtet_werden,
+                ),
+            )
+        )
+        alle_aktien_übergewichten = list(
+            map(
+                lambda x: x["invest"],
+                filter(
+                    lambda x: x["gewicht"] == 1,
+                    aktien_dürfen_unter_oder_übergewichtet_werden,
+                ),
+            )
+        )
+
+        for aktie_untergewicht in alle_aktien_untergewichten:
+            ticker = aktie_untergewicht["ticker"]
+            initial_price_buy = aktie_untergewicht["initial_price_buy"]
             price_ticker_today = df_adjusted.loc[ticker, "Close"]
+            actual_weight = (
+                price_ticker_today * aktie_untergewicht["shares"] / current_amount_value
+            )
+
+            dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
+
+            amount_to_sell = dif_weight * current_amount_value
+            shares_to_sell = amount_to_sell / price_ticker_today
+            invest_copy = aktie_untergewicht.copy()
+            invest_copy["amount"] = amount_to_sell + invest_copy["amount"]
+            invest_copy["shares"] = shares_to_sell + invest_copy["shares"]
+            invest_copy["weight"] = actual_weight + dif_weight
+            invest_copy["price_buy"] = price_ticker_today
+            new_invest_list.append(invest_copy)
+            free_amount -= amount_to_sell
+
+        for aktie_übergewichten in alle_aktien_übergewichten:
+            ticker = aktie_übergewichten["ticker"]
+            initial_price_buy = aktie_übergewichten["initial_price_buy"]
+            price_ticker_today = df_adjusted.loc[ticker, "Close"]
+            actual_weight = (
+                price_ticker_today
+                * aktie_übergewichten["shares"]
+                / current_amount_value
+            )
 
             dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
 
             amount_to_buy = dif_weight * current_amount_value
             shares_to_buy = amount_to_buy / price_ticker_today
-            invest_copy = aktie_darf_unter_oder_übergewichtet_werden.copy()
+            invest_copy = aktie_übergewichten.copy()
             invest_copy["amount"] = amount_to_buy + invest_copy["amount"]
             invest_copy["shares"] = shares_to_buy + invest_copy["shares"]
-            if dif_weight > 0:
-                invest_copy["price_buy"] = (dif_weight * price_ticker_today) + (
-                    1 - dif_weight
-                ) * invest_copy["price_buy"]
+            invest_copy["weight"] = actual_weight + dif_weight
+            invest_copy["price_buy"] = (dif_weight * price_ticker_today) + (
+                1 - dif_weight
+            ) * invest_copy["price_buy"]
+
             new_invest_list.append(invest_copy)  #
 
         # Kaufe Aktien
@@ -138,11 +208,12 @@ class Portfoliodispo(Portfolio):
                     "amount": amount_to_invest,
                     "shares": shares_to_buy,
                     "price_buy": price_ticker,
+                    "price_actual": price_ticker,
                     "weight": weight_ticker,
                     "initial_price_buy": price_ticker,
                 }
                 new_invest_list.append(new_invest)
-        self.current_amount_value = sum(map(lambda x: x["amount"], new_invest_list))
+
         self.portfolio[pd.to_datetime(date)] = {
             "invest": new_invest_list,
             "amount_buy": self.current_amount_value,
@@ -164,7 +235,7 @@ class Portfoliodispo(Portfolio):
 
     def buy_first_stocks(self, df, date):
         tickers = list(df.index)
-        self.invest = []
+        invest = []
         for ticker in tickers:
             weight_ticker = df.loc[ticker, "Weight"]
             price_ticker = df.loc[ticker, "Close"]
@@ -172,101 +243,21 @@ class Portfoliodispo(Portfolio):
             amount_to_invest = self.current_amount_value * weight_ticker
             anzahl_aktien = amount_to_invest / price_ticker
 
-            self.invest.append(
+            invest.append(
                 {
                     "ticker": ticker,
                     "amount": amount_to_invest,
                     "shares": anzahl_aktien,
                     "price_buy": price_ticker,
+                    "price_actual": price_ticker,
                     "weight": weight_ticker,
                     "initial_price_buy": price_ticker,
                     "date_buy": date.strftime("%Y-%m-%d"),
                 }
             )
         self.portfolio[pd.to_datetime(date)] = {
-            "invest": self.invest,
+            "invest": invest,
             "amount_buy": self.current_amount_value,
             "date": date.strftime("%Y-%m-%d"),
         }
         self.current_amount[date.strftime("%Y-%m-%d")] = self.current_amount_value
-
-    def buy_new_stocks(self, df, date):
-        tickers = list(df.index)
-        self.invest = []
-
-        sold_tickers_in_ticker = []
-
-        free_amount = self.current_amount_value
-
-        # Behalte aktien im minus
-        for invest in self.non_selled_invests:
-            ticker = invest["ticker"]
-            shares = invest["shares"]
-            price_ticker = df.loc[ticker, "Close"]
-            amount_to_invest = shares * price_ticker
-            weight_ticker = amount_to_invest / self.current_amount_value
-
-            if ticker not in tickers:
-                self.invest.append(
-                    {
-                        "ticker": ticker,
-                        "amount": amount_to_invest,
-                        "shares": shares,
-                        "price_buy": price_ticker,
-                        "weight": weight_ticker,
-                        "initial_price_buy": invest["initial_price_buy"],
-                    }
-                )
-                free_amount -= amount_to_invest
-            else:
-                weight_of_sold_stock = (
-                    price_ticker * shares
-                ) / self.current_amount_value
-                if weight_of_sold_stock < weight_ticker:
-                    amount_to_invest = free_amount * weight_ticker
-                    # TODO
-                else:
-                    self.invest.append(
-                        {
-                            "ticker": ticker,
-                            "amount": amount_to_invest,
-                            "shares": shares,
-                            "price_buy": price_ticker,
-                            "weight": weight_ticker,
-                            "initial_price_buy": invest["initial_price_buy"],
-                        }
-                    )
-                    free_amount -= amount_to_invest
-
-        remaining_stocks = self.anzahl_aktien - len(self.stocks_in_loss)
-
-        for invest in sold_tickers_in_ticker:
-            ticker = invest["ticker"]
-            shares = invest["shares"]
-            price_ticker = df.loc[ticker, "Close"]
-
-        # Nur die ersten remaining_stocks (n) ausgeben
-        for ticker in tickers:
-            weight_ticker = df.loc[ticker, "Weight"]
-            price_ticker = df.loc[ticker, "Close"]
-
-            amount_to_invest = self.current_amount_value * weight_ticker
-            anzahl_aktien = amount_to_invest / price_ticker
-
-            self.invest.append(
-                {
-                    "ticker": ticker,
-                    "amount": amount_to_invest,
-                    "shares": anzahl_aktien,
-                    "price_buy": price_ticker,
-                    "weight": weight_ticker,
-                    "initial_price_buy": price_ticker,
-                }
-            )
-        self.portfolio[pd.to_datetime(date)] = {
-            "invest": self.invest,
-            "amount_buy": self.current_amount_value,
-            "date": date.strftime("%Y-%m-%d"),
-        }
-
-        self.non_selled_invests = []

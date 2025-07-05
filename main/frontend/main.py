@@ -22,7 +22,7 @@ class MainFrame(tk.Frame):
     def __init__(self):
         root = tk.Tk()
         root.title("Depository Effect Simulator")
-        root.geometry("1200x800-2700+100")
+        root.geometry("1200x800")
         self.strategies = strategies
         self.frequency = FREQUENCY
 
@@ -90,6 +90,13 @@ class MainFrame(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=plot_frame)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(fill="both", expand=True)
+
+        # --- Matplotlib Navigation Toolbar für Zoom & Pan ---
+        from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
+
+        self.toolbar = NavigationToolbar2Tk(self.canvas, plot_frame)
+        self.toolbar.update()
+        self.toolbar.pack(side="bottom", fill="x")
 
         root.mainloop()
 
@@ -220,7 +227,7 @@ class MainFrame(tk.Frame):
             details_text += "\nPortfolio-Zusammensetzung:\n"
             stocks = portfolio_entry["invest"]
             for stock in stocks:
-                details_text += f" Ticker: {stock['ticker']}, Amount: {np.round(stock['amount'],2)}, Anzahl: {np.round(stock['shares'],2)}, Price: {np.round(stock['price_buy'],2)} \n"
+                details_text += f" Ticker: {stock['ticker']}, Amount: {np.round(stock['amount'],2)}, Anzahl: {np.round(stock['shares'],2)}, Price: {np.round(stock['price_buy'],4)} \n"
         else:
             details_text += "\nKeine detaillierten Portfolio-Informationen verfügbar."
 

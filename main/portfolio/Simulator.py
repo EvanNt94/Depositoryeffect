@@ -74,16 +74,25 @@ class Simulator:
         sorted_stocks_head = sorted_stocks.head(int(self.parameter.anzahlAktien)).copy()
 
         if len(stocks_with_loss) > 0:
-            for stock in stocks_with_loss:
-                if stock in list(sorted_stocks_head.index):
-                    continue
-                sorted_stocks_head = sorted_stocks_head.iloc[:-1]  #
-                row_to_add = sorted_stocks.loc[[stock]]
-                sorted_stocks_head = pd.concat([sorted_stocks_head, row_to_add])
+            liste1 = list(stocks_with_loss)
+            liste2 = list(sorted_stocks_head.index)
+            unique = liste1.copy()
+            for el in liste2:
+                if len(unique) >= self.parameter.anzahlAktien:
+                    break
+                if el not in unique:
+                    unique.append(el)
+
+            sorted_stocks_head = sorted_stocks.loc[unique].copy()
+
+        sorted_stocks_head = self.strategy.sort_df(sorted_stocks_head)
 
         sorted_stocks_head.loc[:, "Weight"] = (
             sorted_stocks_head["Market Cap"] / sorted_stocks_head["Market Cap"].sum()
         )
+
+        if len(sorted_stocks_head.index) > self.parameter.anzahlAktien:
+            raise RuntimeError("ERRRORRRRRRRRRRRRRRRRRRRRRRRRRRR")
 
         self.stocks_analyzied[current_date] = {
             "head": sorted_stocks_head,

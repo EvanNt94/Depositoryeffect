@@ -46,7 +46,7 @@ class Portfolio:
 
     def buy_new_stocks(self, df, date):
         tickers = list(df.index)
-        self.invest = []
+        invest = []
         for ticker in tickers:
             weight_ticker = df.loc[ticker, "Weight"]
             price_ticker = df.loc[ticker, "Close"]
@@ -54,24 +54,25 @@ class Portfolio:
             amount_to_invest = self.current_amount_value * weight_ticker
             anzahl_aktien = amount_to_invest / price_ticker
 
-            self.invest.append(
+            invest.append(
                 {
                     "ticker": ticker,
                     "amount": amount_to_invest,
                     "shares": anzahl_aktien,
                     "price_buy": price_ticker,
+                    "price_actual": price_ticker,
                     "weight": weight_ticker,
                     "initial_price_buy": price_ticker,
                 }
             )
         self.portfolio[pd.to_datetime(date)] = {
-            "invest": self.invest,
+            "invest": invest,
             "amount_buy": self.current_amount_value,
             "date": date.strftime("%Y-%m-%d"),
         }
 
         log_str = ""
-        for my_invest in self.invest:
+        for my_invest in invest:
             log_str += f"""
             Ticker: {my_invest["ticker"]}  gekauft für {my_invest["price_buy"]}
                 \n
