@@ -1,0 +1,7 @@
+6. Erweiterbar für:
+	•	Stochastische Volatilität (Heston)
+	•	Zinsmodelle (Vasicek, CIR)
+	•	Jump-Prozesse (Merton, Kou)
+	•	Kalibrierung an Marktpreise
+	•	Sensitivitätsanalyse (Greeks)
+	•	Volatility Surfaces

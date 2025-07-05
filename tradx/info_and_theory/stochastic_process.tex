@@ -1,0 +1,183 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{wrapfig} 
+\usepackage{enumitem}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage[most]{tcolorbox}
+\geometry{margin=2.5cm}
+
+  \tcbset{
+   colback=gray!5,
+   colframe=gray!50,
+   coltitle=black,
+   colbacktitle=white,
+   boxrule=0.5pt,
+   arc=4pt,
+   left=6pt,
+   right=6pt,
+   top=4pt,
+   bottom=4pt,
+   fonttitle=\bfseries,
+ }
+
+
+
+\title{Stochastische Prozesse für Finance}
+\author{Alexandros Apostolidis}
+\date{03.06.2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Überblick und Motivation}
+Stochastische Prozesse bilden das Fundament der modernen Finanzmathematik. Sie ermöglichen die Modellierung unsicherer Entwicklungen wie Aktienkurse, Zinssätze oder Volatilität. Ziel dieses Dokuments ist es, zentrale stochastische Prozesse vorzustellen und deren Bedeutung für Pricing, Risikomodellierung und Marktprognosen zu skizzieren.
+
+\section*{2. Klassische Prozesse}
+
+\subsection*{2.1 Wiener-Prozess (Brownian Motion)}
+Der Wiener-Prozess \( W_t \) ist ein zentrales Modell für zufällige Bewegung:
+\begin{itemize}
+  \item \( W_0 = 0 \)
+  \item \( W_t - W_s \sim \mathcal{N}(0, t-s) \) für \( t > s \)
+  \item unabhängige Inkremente, kontinuierliche Pfade
+\end{itemize}
+Er dient als Grundlage für viele Modelle in Finance.
+
+\subsection*{2.2 Geometrische Brownsche Bewegung (GBM)}
+Das klassische Modell für Aktienkurse basiert auf folgender stochastischer Differentialgleichung (SDE):
+\[
+dS_t = \mu S_t\,dt + \sigma S_t\,dW_t
+\]
+Die Lösung ist:
+\[
+S_t = S_0 \exp\left( \left( \mu - \frac{1}{2}\sigma^2 \right)t + \sigma W_t \right)
+\]
+Diese beschreibt exponentielles Wachstum mit zufälliger Störung.
+
+\clearpage
+\subsection*{2.3 Mean-Reverting Prozesse (Ornstein-Uhlenbeck)}
+Anders als bei der GBM, wo Prozesse driftend nach oben oder unten wandern können, modelliert der Ornstein-Uhlenbeck-Prozess eine Rückkehr zum Mittelwert („mean reversion“). Er eignet sich gut zur Beschreibung von Zinssätzen, Volatilität oder Rohstoffpreisen:
+\[
+dX_t = \theta(\mu - X_t)dt + \sigma dW_t
+\]
+Dabei ist:
+\begin{itemize}
+  \item \( \mu \): langfristiger Mittelwert
+  \item \( \theta \): Reversionsgeschwindigkeit
+  \item \( \sigma \): Volatilität des Prozesses
+\end{itemize}
+
+Die Lösung beschreibt einen Prozess, der stochastisch um den Mittelwert schwankt. Der OU-Prozess ist ein Gauss-Prozess mit analytisch berechenbarer Dichte.
+
+\subsection*{2.4 Heston-Modell (stochastische Volatilität)}
+Während bei der GBM die Volatilität als konstant angenommen wird, geht das Heston-Modell einen Schritt weiter und modelliert sie selbst als stochastischen Prozess. Es koppelt zwei SDEs:
+\[
+\begin{aligned}
+dS_t &= \mu S_t\,dt + \sqrt{v_t} S_t\,dW_t^S \\
+dv_t &= \kappa(\theta - v_t)dt + \xi \sqrt{v_t} dW_t^v
+\end{aligned}
+\]
+wobei \( dW_t^S \) und \( dW_t^v \) korrelierte Wiener-Prozesse sind mit \( \mathbb{E}[dW_t^S dW_t^v] = \rho dt \).
+
+\begin{itemize}
+  \item \( v_t \): stochastische Varianz
+  \item \( \kappa \): Geschwindigkeit der Mittelwertrückkehr
+  \item \( \theta \): langfristige mittlere Varianz
+  \item \( \xi \): Volatilität der Varianz (Vol of vol)
+  \item \( \rho \): Korrelation zwischen Preis und Volatilität
+\end{itemize}
+
+Das Heston-Modell kann Smile- und Skew-Effekte in Optionspreisen abbilden und ist numerisch gut zugänglich (z.\,B. durch Fourier-Methoden). In der Praxis wird es zur Kalibrierung von Volatility Surfaces verwendet.
+
+\clearpage
+\subsection*{2.5 Jump-Diffusion-Prozesse (Merton-Modell)}
+Das Merton-Modell erweitert die klassische GBM um diskrete Sprünge, um plötzliche Preisbewegungen zu modellieren – z.\,B. durch Nachrichten, Earnings oder Schocks. Die Dynamik setzt sich aus kontinuierlicher Diffusion und einem Poisson-getriebenen Sprungprozess zusammen:
+\[
+dS_t = \mu S_t\,dt + \sigma S_t\,dW_t + S_{t^-}(J - 1)\,dN_t
+\]
+Dabei sind:
+\begin{itemize}
+  \item \( W_t \): Standard-Wiener-Prozess
+  \item \( N_t \): Poisson-Prozess mit Intensität \( \lambda \)
+  \item \( J \): Zufallsvariable für relative Sprunggröße (\( \log J \sim \mathcal{N}(\mu_J, \sigma_J^2) \))
+  \item \( S_{t^-} \): Preis unmittelbar vor dem Sprung
+\end{itemize}
+
+Der Preisprozess erhält dadurch diskontinuierliche Sprungkomponenten. Das Modell eignet sich gut zur Erklärung von „Fat Tails“ und asymmetrischen Returnverteilungen. In der Praxis wird es bei Optionen mit Sprungrisiko oder zur Preisabschätzung bei Event-Risiken eingesetzt.
+
+\subsection*{2.6 Vergleich der Modelle}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Modell} & \textbf{Drift} & \textbf{Volatilität} & \textbf{Sprünge} & \textbf{Mean Reversion} \\
+\hline
+GBM & konstant & konstant & nein & nein \\
+Ornstein-Uhlenbeck & zum Mittelwert & konstant & nein & ja \\
+Heston & konstant & stochastisch & nein & ja (in Volatilität) \\
+Merton & konstant & konstant & ja (Poisson) & nein \\
+\hline
+\end{tabular}
+\caption{Vergleich klassischer stochastischer Modelle in Finance}
+\end{table}
+
+\clearpage
+\section*{3. Modellwahl in der Praxis}
+
+Die Auswahl eines geeigneten stochastischen Modells hängt stark vom Anwendungsfall und den beobachteten Markteigenschaften ab. In der Praxis wird selten ein Modell rein aus theoretischer Eleganz gewählt – entscheidend sind vielmehr Faktoren wie Datenverfügbarkeit, Kalibrierbarkeit, Rechenaufwand und Modellgüte.
+
+\begin{itemize}
+  \item \textbf{GBM:} Wird trotz ihrer Einfachheit in vielen analytischen Modellen (z.\,B. Black-Scholes) verwendet. Sie eignet sich, wenn keine signifikanten Smile- oder Skew-Strukturen vorliegen.
+  
+  \item \textbf{Ornstein-Uhlenbeck:} Wird primär für Zinsmodelle oder Commoditypreise genutzt, bei denen eine Rückkehr zum Mittelwert empirisch beobachtbar ist. Auch für Volatilitätsprozesse (z.\,B. in Heston) als Subkomponente sinnvoll.
+  
+  \item \textbf{Heston:} Besonders verbreitet bei der Modellierung impliziter Volatilitätsstrukturen (Smile, Skew). Wird oft in Kombination mit Fourier-Methoden oder für Kalibrierungen auf IV-Surfaces genutzt.
+  
+  \item \textbf{Jump-Diffusion (Merton):} Kommt zum Einsatz, wenn Märkte sprunghafte Preisveränderungen zeigen, etwa bei Earnings, Makroschocks oder politischer Unsicherheit. Besonders bei Short-Term Optionen wichtig.
+\end{itemize}
+
+Ein Modell ist in der Praxis immer ein Kompromiss zwischen Realismus und Rechenbarkeit. Deshalb werden häufig auch Hybridmodelle verwendet oder Modelle durch numerische Verfahren ergänzt, etwa mit Monte-Carlo-Simulationen oder Finite-Difference-Methoden zur Preisberechnung.
+
+\section*{4. Simulation \& Kalibrierung}
+
+Zur numerischen Untersuchung stochastischer Modelle ist die Simulation ein zentrales Werkzeug. Insbesondere das Euler-Maruyama-Verfahren erlaubt eine effiziente Approximation stochastischer Differentialgleichungen (SDEs), auch wenn diese nicht explizit lösbar sind.
+
+In der Praxis wird zusätzlich eine Kalibrierung benötigt: Die Parameter der Modelle (z.\,B. im Heston- oder Merton-Modell) werden so angepasst, dass modellierte Preise möglichst gut zu beobachteten Marktpreisen passen. Ein verbreiteter Kalibrierungsansatz ist die Minimierung der Abweichung zur beobachteten impliziten Volatilität (IV-Surface).
+
+\clearpage
+\section*{5. Visualisierungsideen}
+
+Zur Vermittlung des dynamischen Verhaltens stochastischer Modelle sind Visualisierungen essenziell. Die folgenden Darstellungen bieten sich besonders an:
+
+\begin{itemize}
+  \item \textbf{Brownian Paths:} Mehrere Realisationen des Wiener-Prozesses verdeutlichen die zufällige Pfadstruktur.
+  \item \textbf{OU-Trajektorien:} Zeigen schön die Rückkehr zum Mittelwert und die Abhängigkeit vom Parameter \(\theta\).
+  \item \textbf{GBM vs. Heston:} Vergleich einzelner Preisprozesse – z.\,B. unter identischer Startbedingung – zur Verdeutlichung der Wirkung stochastischer Volatilität.
+  \item \textbf{IV-Surface:} Darstellung einer typischen impliziten Volatilitätsoberfläche unter Heston vs. Black-Scholes zur Visualisierung von Smile- und Skew-Effekten.
+\end{itemize}
+
+\section*{6. Ausblick und Weiterführende Konzepte}
+
+Die behandelten Prozesse bilden das Fundament vieler Anwendungen in der Finanzmodellierung. Aufbauend darauf eröffnen sich eine Vielzahl weiterführender Ansätze, die speziellere Marktphänomene oder strukturelle Eigenschaften adressieren:
+
+\begin{itemize}
+  \item \textbf{Numerische Methoden für SDEs:} Neben dem Euler-Maruyama-Verfahren bieten sich höherwertige Verfahren wie Milstein oder stochastische Runge-Kutta-Schemata an, um Genauigkeit und Stabilität zu verbessern.
+  
+  \item \textbf{Zustandsraummodelle und Kalman-Filter:} Bei Modellen mit latenten (nicht beobachtbaren) Zustandsvariablen – z.\,B. bei stochastischer Volatilität – ermöglicht der Kalman-Filter (oder seine nichtlinearen Varianten) eine effiziente Schätzung und Glättung.
+  
+  \item \textbf{Lokale Volatilitätsmodelle:} Modelle wie das Dupire-Modell beschreiben die Volatilität als deterministische Funktion von Preis und Zeit und erlauben eine exakte Replikation beobachteter Optionspreise unter vollständigem Markt.
+  
+  \item \textbf{Hybride Modellansätze:} In der Praxis werden oft kombinierte Modelle eingesetzt – etwa Heston mit Sprüngen, stochastische Lokalmischungen (SLV) oder sogar Machine-Learning-unterstützte Volatilitätsprognosen.
+\end{itemize}
+
+Diese Themen markieren die Schnittstelle zu modernen Pricing-Methoden, numerischer Optimierung und adaptiven Risikomodellen – und bilden die Grundlage für fortgeschrittene Derivatebewertung, Portfolio-Optimierung und strategisches Risikomanagement.
+
+\end{document}

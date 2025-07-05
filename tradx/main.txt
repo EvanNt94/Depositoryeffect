@@ -1,0 +1,10 @@
+also
+ich glaube ich baue einen bloomberg terminal einfach.
+hier ist einfach mein backend und ich habe ein frontend das immer weiter überarbeitet wird.
+währenddessen schreibe ich im backend nns.
+wir müssen die analysieren und visualisieren.
+
+
+
+
+

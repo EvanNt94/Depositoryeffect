@@ -1,0 +1,26 @@
+insert_or_update_ticker: |
+  INSERT INTO exchange.stock_listing (
+    exchange, ticker, ticker_local, isin, name, country,
+    country_hq, currency, website, last_updated
+  ) VALUES (
+    %(exchange)s, %(ticker)s, %(ticker_local)s, %(isin)s, %(name)s, %(country)s,
+    %(country_hq)s, %(currency)s, %(website)s, %(last_updated)s
+  )
+  ON CONFLICT (isin) DO UPDATE SET
+    exchange = EXCLUDED.exchange,
+    ticker = EXCLUDED.ticker,
+    ticker_local = EXCLUDED.ticker_local,
+    name = EXCLUDED.name,
+    country = EXCLUDED.country,
+    country_hq = EXCLUDED.country_hq,
+    currency = EXCLUDED.currency,
+    website = EXCLUDED.website,
+    last_updated = EXCLUDED.last_updated;
+
+get_isin_from_ticker: |
+  SELECT isin FROM exchange.stock_listing
+  WHERE ticker = %(ticker)s;
+
+get_ticker_from_local: |
+  SELECT ticker FROM exchange.stock_listing
+  WHERE ticker_local = %(ticker_local)s AND exchange = %(exchange)s;

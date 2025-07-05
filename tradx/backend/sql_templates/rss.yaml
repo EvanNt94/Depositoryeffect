@@ -1,0 +1,25 @@
+insert_rss_entry: |
+  INSERT INTO news.rss_entry (
+    id, feed, title, link, summary, date,
+    company, ticker, isin, language,
+    attachment_url, pdf_path, last_updated, summary_tsv
+  ) VALUES (
+    $1, $2, $3, $4, $5, $6,
+    $7, $8, $9, $10,
+    $11, $12, $13,
+    to_tsvector($10, $5)
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    feed = EXCLUDED.feed,
+    title = EXCLUDED.title,
+    link = EXCLUDED.link,
+    summary = EXCLUDED.summary,
+    date = EXCLUDED.date,
+    company = EXCLUDED.company,
+    ticker = EXCLUDED.ticker,
+    isin = EXCLUDED.isin,
+    language = EXCLUDED.language,
+    attachment_url = EXCLUDED.attachment_url,
+    pdf_path = EXCLUDED.pdf_path,
+    last_updated = EXCLUDED.last_updated,
+    summary_tsv = to_tsvector(EXCLUDED.language, EXCLUDED.summary);

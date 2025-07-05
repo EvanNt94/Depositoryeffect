@@ -1,0 +1,18 @@
+insert_income_statement: |
+  INSERT INTO fundamentals.income_statement (
+    isin, fiscalYear, fiscalQuarter, revenue, costOfRevenue,
+    grossProfit, operatingExpenses, operatingIncome, netIncome,
+    last_updated
+  ) VALUES (
+    %(isin)s, %(fiscalYear)s, %(fiscalQuarter)s, %(revenue)s, %(costOfRevenue)s,
+    %(grossProfit)s, %(operatingExpenses)s, %(operatingIncome)s, %(netIncome)s,
+    %(last_updated)s
+  )
+  ON CONFLICT (isin, fiscalYear, fiscalQuarter) DO UPDATE SET
+    revenue = EXCLUDED.revenue,
+    costOfRevenue = EXCLUDED.costOfRevenue,
+    grossProfit = EXCLUDED.grossProfit,
+    operatingExpenses = EXCLUDED.operatingExpenses,
+    operatingIncome = EXCLUDED.operatingIncome,
+    netIncome = EXCLUDED.netIncome,
+    last_updated = EXCLUDED.last_updated

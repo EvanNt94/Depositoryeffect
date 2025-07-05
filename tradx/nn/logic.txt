@@ -1,0 +1,9 @@
+Date seems like a positional encoder.
+Lets make 32k context length that means about 1.5 months into future. (2024-06-13 19:59:00 - 2024-05-15 04:00:00: 20k)
+features (5*x: open, high, low, close, volume) and stock and mcap: gets also own vector also his sector and specific area. -> how to get closeness to sectors.
+
+
+1. With long term data compute of the closeness of sectors (volatility/correlation coefficient)
+2. Build a embedding around this 
+3. Do this with Subsectors and specific stocks.
+4. Build a transformer. (more like look for steps 4-10).

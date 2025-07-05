@@ -1,0 +1,37 @@
+Die Datei „Tools from Stochastic Analysis for Mathematical Finance: A Gentle Introduction“ von Laura Ballotta und Gianluca Fusai (Mai 2018) ist im Grunde ein umfassendes Tutorial beziehungsweise Lehrskript, das die wichtigsten Werkzeuge der stochastischen Analysis in kontinuierlicher Zeit für die Anwendung in der Finanzmathematik erklärt.
+
+Konkret umfasst das Dokument (vgl. Inhaltsverzeichnis) folgende Hauptbestandteile:
+	1.	Grundlagen der Brownschen Bewegung – Definition, Eigenschaften (Martingal, Markov, Quadratische Variation) und Simulation ✍ ￼.
+	2.	Stochastisches Integral & SDEs – Konstruktion des Ito-Integrals, Ito-Formel, Beispiele wie Arithmetic Brownian Motion, Geometric Brownian Motion (GBM) und weiterführende Rechnungen beispielsweise mittels Monte-Carlo oder PDE-Verfahren.
+	3.	Wichtige stochastische Prozesse – Detaillierte Herleitung und Simulation von Prozessen wie GBM, Vasicek-Modell, Cox-Ingersoll-Ross (CIR), CEV, Brownian Bridge sowie dem Heston-Stochastic-Volatility-Modell inklusive charakteristischer Funktionen und Dichten.
+	4.	Prozesse mit Sprüngen (Jump-Diffusion) – Einführung in Poisson- und γ-Prozesse, Merton-Jump-Diffusion, Kou-Modell und Variance-Gamma-Prozesse.
+	5.	Maßänderungen und Girsanov-Theorem – Erklärung, wie man mittels Girsanov unter Risikoneutralität oder Wechsel der Numéraire neue Wahrscheinlichkeitsmaße konstruiert und welche Anwendungen sich daraus ergeben (z. B. Pricing unter verschiedenen Numéraires).
+	6.	Anhangskapitel zu Verteilungen (Normal, Lognormal, χ², Poisson, Exponential, Gamma, multivariate Normalverteilung), numerischen Methoden (Quadratur, FFT, COS-Methode) und LiveScripts/Beispielen in MATLAB.
+
+
+    📘 Cheatsheet-Serie: Erweiterte Finanzmodelle
+	1.	Stochastische Volatilität (Heston)
+	•	Formel der SDEs für Preis & Volatilität
+	•	Charakteristische Funktion
+	•	Calibration-Tipps (z. B. FFT, Carr-Madan)
+	•	Beispiel-IV-Surface
+	2.	Zinsmodelle (Vasicek, CIR)
+	•	SDEs, analytische Lösung (Vasicek)
+	•	Mean-Reversion, stationäre Verteilung
+	•	Vergleich: negativer Zinssatz erlaubt?
+	3.	Jump-Prozesse (Merton, Kou)
+	•	Sprung-Diffusions-SDE
+	•	Poisson-Intensität, Jump-Größenverteilung
+	•	Einfluss auf Option-Pricing / IV-Skews
+	4.	Kalibrierung an Marktpreise
+	•	Zielfunktion (z. B. RMSE zu Mid-IV)
+	•	Regularisierung & Constraints
+	•	Optimierungsmethoden (L-BFGS, CMA-ES)
+	5.	Sensitivitätsanalyse (Greeks)
+	•	Ableitungsmethoden (finite diff, adjoint)
+	•	Vega-Map / Heatmaps
+	•	Greeks unter Heston vs. BS
+	6.	Volatility Surfaces
+	•	$\sigma(K, T)$ und typische Muster (Smile, Skew)
+	•	SVI-Parameterisierung
+	•	PCA für Forecasts (Level, Slope, Curvature)

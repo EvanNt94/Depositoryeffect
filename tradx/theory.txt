@@ -1,0 +1,9 @@
+First we sort the Symbols for each stock exchange.
+By this we can access all financial data from yahoo finance.
+Then we build the NN 
+Then we try to get an Order
+This will be routed?
+
+
+
+what makes the thing stochastic? -> news, etc.

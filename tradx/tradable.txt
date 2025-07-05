@@ -1,0 +1,1 @@
+Not float < 20% unless dividend yield > market%

@@ -1,0 +1,62 @@
+Neben Technischer, Quantitativer und Fundamentaler Analyse gibt es eine Reihe weiterer seriöser Ansätze, die keine Esoterik sind, sondern auf nachvollziehbaren Methoden und Daten basieren:
+	1.	Makroökonomische Analyse
+– Untersuchung von Zins-, Inflations-, Arbeitsmarkt- und Wachstumsdaten
+– Nutzung von Wirtschaftszyklen (z. B. Konjunkturphasen) für Asset-Allokation
+	2.	Event-Driven / Katalysator-Analyse
+– Analyse von kurz- bis mittelfristigen Kursbewegungen um konkrete Ereignisse: Earnings, Fusionen/Übernahmen, Regulierungen
+– Fokus auf Risikoprämien vor/nach Veröffentlichungen
+	3.	Statistical Arbitrage / Relative-Value-Analyse
+– Identifikation von Fehleinschätzungen zwischen ähnlichen Assets (Pairs-Trading, Yield-Spreads)
+– Modelle basierend auf Mean Reversion und Cointegration
+	4.	Factor Investing
+– Portfolios, die systematisch nach Faktoren wie Value, Size, Quality, Momentum, Low Volatility gewichtet werden
+– Regelbasiertes Rebalancing
+	5.	Risikomanagement & Portfolio-Optimierung
+– Value-at-Risk, Expected Shortfall, Stress-Tests
+– Optimierung nach Sharpe, Sortino, Max-Drawdown minimalisieren
+	6.	Sentiment- und News-Analyse
+– NLP-basierte Sentiment Scores aus Nachrichten, Social Media, Analysten-Berichten
+– Messbare Stimmungsindikatoren, die in Quant-Modelle einfließen
+	7.	Behavioral Finance
+– Untersuchung von psychologischen Biases (Overconfidence, Herding)
+– Nutzung von Markt-Sentiment-Indikatoren und Flow-Daten
+	8.	Machine Learning / KI-Methoden
+– Supervised Learning (z. B. Random Forests, Neural Nets) für Vorhersagen
+– Unsupervised Learning (Cluster-Analysen) für Mustererkennung
+	9.	On-chain / Crypto-Datenanalyse
+– Analyse von Blockchain-Metriken (Transaktionsvolumen, Wallet-Aktivität)
+– Kennzahlen wie Network Value to Transactions (NVT), Active Addresses
+	10.	Technische Indikatoren-Kombinationen
+– Mehrfach-Timeframe-Analysen (z. B. Daily vs. Weekly)
+– Cross-Asset Korrelationen (z. B. Aktien vs. Anleihen vs. Rohstoffe)
+
+1.	Fixed-Income-/Zinskurven-Analyse
+– Duration & Convexity: Empfindlichkeit von Anleihekursen gegenüber Zinsänderungen
+– Zinsstrukturmodelle: Hull-White, Vasicek, Nelson-Siegel zur Prognose und Bewertung
+	2.	Credit-Risk-Analyse
+– PD/LGD/EAD-Modelle: Probability of Default, Loss Given Default, Exposure at Default
+– Credit-Spreads: Differenz zwischen Rendite einer Unternehmens- vs. Bundesanleihe
+	3.	Liquiditäts- und Order-Flow-Analyse
+– Orderbuch-Daten: Bid-Ask-Imbalance, Depth-Profile, Volume-Ticks
+– Footprint-/Heatmap-Charts: Echtzeit-Liquiditätsströme zur Intraday-Signalgebung
+	4.	Szenario- und Stresstest-Analyse
+– What-if-Szenarien: Simuliere Markt-, Zins- oder Währungsschocks
+– Regulatorische Stresstests: Basel- und Solvency-Vorgaben
+	5.	ESG-Analyse (Environmental, Social, Governance)
+– Nachhaltigkeitskennzahlen: CO₂-Fußabdruck, Diversity-Metriken, Unternehmensethik
+– Impact-Investing-Scores: Messung realer sozialer und ökologischer Effekte
+	6.	DCF- und Multiples-Valuation
+– Discounted Cash Flow: Barwert zukünftiger Free Cash Flows
+– Peer-Multiples: KGV, EV/EBITDA-Vergleich in der Branche
+	7.	Private-Markets-Analyse
+– Private Equity / Immobilien: Interne Rendite (IRR), Kapitalabruf-Profile, Cap Rates
+– Infrastruktur-Finanzierung: Projekt-Cash-Flows, Concession-Risiken
+	8.	Korrelations- und Diversifikations-Analyse
+– Korrelationen & Covarianzen: Ermittlung von Portfolioumschichtungs-Opportunitäten
+– Cluster- und Copula-Modelle: Tiefere Abhängigkeiten jenseits linearer Korrelation
+	9.	Regime-Switching- und Markov-Modelle
+– Ökonometrische Modelle: Erkennen von Markt- oder Staatsformen (z. B. Bullen vs. Bären)
+– Hidden Markov Models: Prognose von Wechseln zwischen Phasen
+	10.	Options-Preismodell-Analyse
+– Black-Scholes / Heston / SABR: Modellierung von Volatilitätsstrukturen
+– Implied vs. Realized Volatility: Arbitrage- und Hedging-Ansätze

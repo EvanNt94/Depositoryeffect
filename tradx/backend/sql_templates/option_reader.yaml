@@ -1,0 +1,43 @@
+get_underlying_by_isin: |
+  SELECT * FROM option.underlyings
+  WHERE isin = $1;
+
+get_active_isin_wo_underlying: |
+  SELECT s.isin
+  FROM asset.stock s
+  LEFT JOIN option.underlyings u ON s.isin = u.isin
+  WHERE u.isin IS NULL AND s.isin IS NOT NULL AND s.defaulted_timestamp = -1;
+
+get_all_underlyings: |
+  SELECT * FROM option.underlyings;
+
+get_underlying_id_by_isin: |
+  SELECT id FROM option.underlyings
+  WHERE isin = $1;
+
+get_option_id_by_symbol: |
+  SELECT id FROM option.options
+  WHERE option_symbol = $1;
+
+get_option_id_full: |
+  SELECT id FROM option.options
+  WHERE underlying_id = $1
+    AND type = $2
+    AND strike = $3
+    AND expiry = $4;
+
+get_all_underlyings_with_options: |
+  SELECT id, isin FROM option.underlyings 
+  WHERE has_option = true;
+
+
+get_option_price_rows_by_symbol: |
+  SELECT p.* FROM option.option_prices p
+  JOIN option.options o ON o.id = p.option_id
+  WHERE o.option_symbol = $1;
+
+get_all_active_options: |
+  SELECT o.id, o.option_symbol, o.type, o.expiry, o.strike, o.underlying_id, u.isin
+  FROM option.options o
+  JOIN option.underlyings u ON o.underlying_id = u.id
+  WHERE o.expiry >= CURRENT_DATE;

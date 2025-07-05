@@ -1,0 +1,5 @@
+wir brauchen fundamentals. # hier lernen wir db.
+1. seite: company info: name, stockexchanges, 
+activity description, website, float, staffnumber, 
+listed on sx_x, mcap, cash, debt, shares,
+address?

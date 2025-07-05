@@ -1,0 +1,3 @@
+Beispielsweise kostet das “US Equity and Options Add-On Streaming Bundle” für nicht-professionelle Nutzer 4,50 USD pro Monat. Alternativ kannst du Momentaufnahmen (Snapshot-Daten) der aktuellen Optionspreise für 0,01 USD pro Abfrage für US-notierte Aktien und ETFs abrufen. 
+
+port  7496/7497

@@ -1,0 +1,32 @@
+the base. 
+1. data 
+2. trade -> my_requests
+3. news -> news.py
+
+
+
+SX Europa 
+AT Athens
+DE Stuttgart
+BE Berlin
+— Bratislava
+RO Bucharest
+BD Budapest
+— Bulgarian
+— Cyprus
+— Luxemburg
+— Malta
+F Frankfurt
+L London
+PR Prag
+VI Vienna 
+WA Warschau
+— Zagreb
+
+
+
+** deutsche Börse group
+** euronext
+** ICE futures
+** Nasdaq *
+** SIX group

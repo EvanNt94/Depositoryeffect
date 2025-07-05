@@ -1,0 +1,9 @@
+- TITAN enthält stock representation
+- "main" - LLM auf gpu mit 1-2 Memory Modules (inference)
+- jede stock / sector / .. 1 memory.
+
+- cpu hält memorys von "main stocks" und läuft langsam im hintergrund für deren updates
+
+- improve later:
+ - hf embedding layer only load für mehr speed
+ - 

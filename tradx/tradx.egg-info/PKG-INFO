@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: tradx
+Version: 0.2
+Summary: Ein Finanzanalyse-Tool
+Author: Alexandros Apostolidis
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: yfinance>=0.2.18
+
+# Trade Project
+
+## Installation
+
+1. Klone das Repository:
+   ```bash
+   git clone https://github.com/dein-repo/trade.git
+   cd trade

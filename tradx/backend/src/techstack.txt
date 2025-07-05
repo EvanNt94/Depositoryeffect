@@ -1,0 +1,241 @@
+python 
+stock: Ticker, ISIN, Name, website, industryKey, sectorKey, longBusinessSummary, fullTimeEmployees, irWebsite, 
+        dividend: previousClose/dividendRate, fiveYearAvgDividendYield, beta 
+ Ticker.info:
+ 'address1': 'One Apple Park Way', # street
+ 'city': 'Cupertino', # city
+ 'state': 'CA', # state
+ 'zip': '95014', # zip
+ 'country': 'United States', # country
+ 'website': 'https://www.apple.com', # website
+ 'industryKey': 'consumer-electronics', # industryKey
+ 'sectorKey': 'technology', # sectorKey
+ 'longBusinessSummary': 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple TV, Apple Watch, Beats products, and HomePod. It also provides AppleCare support and cloud services; and operates various platforms, including the App Store that allow customers to discover and download applications and digital content, such as books, music, video, games, and podcasts, as well as advertising services include third-party licensing arrangements and its own advertising platforms. In addition, the company offers various subscription-based services, such as Apple Arcade, a game subscription service; Apple Fitness+, a personalized fitness service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV+, which offers exclusive original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It distributes third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in 1976 and is headquartered in Cupertino, California.',
+ 'fullTimeEmployees': 164000, # fullTimeEmployees
+ 'irWebsite': 'http://investor.apple.com/', # irWebsite
+ 'fiveYearAvgDividendYield': 0.57,  # fiveYearAvgDividendYield
+ 'beta': 1.275, # beta
+ 'currency': 'USD',
+ 'financialCurrency': 'USD',
+ 'symbol': 'AAPL',
+ 'region': 'US',
+ 'firstTradeDateMilliseconds': 345479400000,
+ 'longName': 'Apple Inc.',
+ 'displayName': 'Apple', # name
+
+
+dividends: ISIN, price, dividend, epoch, 
+ Ticker.info
+ 'trailingAnnualDividendYield': 0.004834187,
+
+
+statistics: 
+ -> view
+
+
+
+fundamentals: 
+ Ticker.info
+ 'trailingPE': 32.202026,
+ 'forwardPE': 24.839348,
+ 'marketCap': 3082973085696,
+ 'enterpriseValue': 3139313074176,
+ 'profitMargins': 0.24301,
+ 'floatShares': 14911480604,
+ 'sharesOutstanding': 14935799808,
+ 'sharesShort': 108598767,
+ 'sharesShortPriorMonth': 112333139,
+ 'sharesShortPreviousMonthDate': 1743379200,
+ 'dateShortInterest': 1745971200,
+ 'sharesPercentSharesOut': 0.0073,
+ 'heldPercentInsiders': 0.02085,
+ 'heldPercentInstitutions': 0.62923,
+ 'shortRatio': 1.43,
+ 'shortPercentOfFloat': 0.0073,
+ 'impliedSharesOutstanding': 14949300224,
+ 'bookValue': 4.471,
+ 'priceToBook': 46.167522,
+ 'lastFiscalYearEnd': 1727481600,
+ 'nextFiscalYearEnd': 1759017600,
+ 'mostRecentQuarter': 1743206400,
+ 'earningsQuarterlyGrowth': 0.048,
+ 'netIncomeToCommon': 97294000128,
+ 'trailingEps': 6.41,
+ 'forwardEps': 8.31,
+ 'enterpriseToRevenue': 7.841,
+ 'enterpriseToEbitda': 22.607,
+ 'totalCash': 48497999872,
+ 'totalCashPerShare': 3.247,
+ 'ebitda': 138865999872,
+ 'totalDebt': 98186002432,
+ 'quickRatio': 0.68,
+ 'currentRatio': 0.821,
+ 'totalRevenue': 400366010368,
+ 'debtToEquity': 146.994,
+ 'revenuePerShare': 26.455,
+ 'returnOnAssets': 0.23809999,
+ 'returnOnEquity': 1.38015,
+ 'grossProfits': 186699005952,
+ 'freeCashflow': 97251500032,
+ 'operatingCashflow': 109555998720,
+ 'earningsGrowth': 0.078,
+ 'revenueGrowth': 0.051,
+ 'grossMargins': 0.46632,
+ 'ebitdaMargins': 0.34685,
+ 'operatingMargins': 0.31028998,
+ 'epsTrailingTwelveMonths': 6.41,
+ 'epsForward': 8.31,
+ 'epsCurrentYear': 7.19078,
+ 'priceEpsCurrentYear': 28.705507,
+ 'trailingPegRatio': 2.1059
+
+
+
+price:
+ 'currentPrice': 206.415,
+ 'volume': 13436243,
+ 'regularMarketVolume': 13436243,
+ 'averageVolume': 61490677,
+ 'averageVolume10days': 50883200,
+ 'averageDailyVolume10Day': 50883200,
+ 'bid': 204.03,
+ 'ask': 207.05,
+ 'bidSize': 4,
+ 'askSize': 1,
+ 'fiftyTwoWeekLow': 169.21,
+ 'fiftyTwoWeekHigh': 260.1,
+ 'priceToSalesTrailing12Months': 7.7003865,
+ 'fiftyDayAverage': 207.4556,
+ 'twoHundredDayAverage': 226.1199,
+ 'fiftyDayAverageChange': -1.0406036,
+ 'fiftyDayAverageChangePercent': -0.0050160307,
+ 'twoHundredDayAverageChange': -19.70491,
+ 'twoHundredDayAverageChangePercent': -0.08714364
+ 'averageDailyVolume3Month': 61490677,
+ 'fiftyTwoWeekLowChange': 37.204987,
+ 'fiftyTwoWeekLowChangePercent': 0.21987462,
+ 'fiftyTwoWeekRange': '169.21 - 260.1',
+ 'fiftyTwoWeekHighChange': -53.685013,
+ 'fiftyTwoWeekHighChangePercent': -0.20640142,
+ 'fiftyTwoWeekChangePercent': 8.360397,
+ 'regularMarketPrice': 206.415,
+ '52WeekChange': 0.08360398,
+ 'SandP52WeekChange': 0.11936104,
+
+
+ 
+estimates:
+ 'targetHighPrice': 300.0,
+ 'targetLowPrice': 170.62,
+ 'targetMeanPrice': 228.75928,
+ 'targetMedianPrice': 230.0,
+ 'recommendationMean': 2.08696,
+ 'numberOfAnalystOpinions': 41,
+ 'averageAnalystRating': '2.1 - Buy',
+
+
+
+ leadershiop 
+ 'companyOfficers': [{'maxAge': 1,
+   'name': 'Mr. Timothy D. Cook',
+   'age': 63,
+   'title': 'CEO & Director',
+   'yearBorn': 1961,
+   'fiscalYear': 2024,
+   'totalPay': 16520856,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Mr. Jeffrey E. Williams',
+   'age': 60,
+   'title': 'Chief Operating Officer',
+   'yearBorn': 1964,
+   'fiscalYear': 2024,
+   'totalPay': 4637585,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Ms. Katherine L. Adams',
+   'age': 60,
+   'title': 'Senior VP, General Counsel & Secretary',
+   'yearBorn': 1964,
+   'fiscalYear': 2024,
+   'totalPay': 5022182,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': "Ms. Deirdre  O'Brien",
+   'age': 57,
+   'title': 'Chief People Officer & Senior VP of Retail',
+   'yearBorn': 1967,
+   'fiscalYear': 2024,
+   'totalPay': 5022182,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Mr. Kevan  Parekh',
+   'age': 52,
+   'title': 'Senior VP & CFO',
+   'yearBorn': 1972,
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Mr. Chris  Kondo',
+   'title': 'Senior Director of Corporate Accounting',
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Suhasini  Chandramouli',
+   'title': 'Director of Investor Relations',
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Ms. Kristin Huguet Quayle',
+   'title': 'Vice President of Worldwide Communications',
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Mr. Greg  Joswiak',
+   'title': 'Senior Vice President of Worldwide Marketing',
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0},
+  {'maxAge': 1,
+   'name': 'Mr. Adrian  Perica',
+   'age': 50,
+   'title': 'Vice President of Corporate Development',
+   'yearBorn': 1974,
+   'fiscalYear': 2024,
+   'exercisedValue': 0,
+   'unexercisedValue': 0}],
+
+
+
+risk
+'auditRisk': 7,
+ 'boardRisk': 1,
+ 'compensationRisk': 3,
+ 'shareHolderRightsRisk': 1,
+ 'overallRisk': 1,
+
+
+
+
+
+
+
+
+
+ 'quoteSourceName': 'Nasdaq Real Time Price',
+ 'earningsTimestamp': 1746131400,
+ 'earningsTimestampStart': 1753873140,
+ 'earningsTimestampEnd': 1754308800,
+ 'earningsCallTimestampStart': 1746133200,
+ 'earningsCallTimestampEnd': 1746133200,
+ 'isEarningsDateEstimate': True,
+ 'gmtOffSetMilliseconds': -14400000,
+'hasPrePostMarketData': True,

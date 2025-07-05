@@ -1,0 +1,69 @@
+insert_underlying: |
+  INSERT INTO option.underlyings (ticker, isin, has_option)
+  VALUES ($1, $2, $3)
+  ON CONFLICT (isin) DO UPDATE
+  SET
+    ticker = EXCLUDED.ticker,
+    has_option = EXCLUDED.has_option;
+
+insert_option: |
+  INSERT INTO option.options (underlying_id, type, strike, expiry, option_symbol)
+  VALUES ($1, $2, $3, $4, $5)
+  ON CONFLICT (option_symbol) DO NOTHING;
+
+insert_option_greeks: |
+  INSERT INTO option.option_greeks (
+    option_id, timestamp,
+    delta, gamma, vega, theta, rho,
+    iv, price,
+    vomma, charm, vanna, speed, zomma, color, ultima, veta,
+    source, model_name
+  ) VALUES (
+    $1, $2,
+    $3, $4, $5, $6, $7,
+    $8, $9,
+    $10, $11, $12, $13, $14, $15, $16, $17,
+    $18, $19
+  )
+  ON CONFLICT (option_id, timestamp) DO UPDATE SET
+    delta = EXCLUDED.delta,
+    gamma = EXCLUDED.gamma,
+    vega = EXCLUDED.vega,
+    theta = EXCLUDED.theta,
+    rho = EXCLUDED.rho,
+    iv = EXCLUDED.iv,
+    price = EXCLUDED.price,
+    vomma = EXCLUDED.vomma,
+    charm = EXCLUDED.charm,
+    vanna = EXCLUDED.vanna,
+    speed = EXCLUDED.speed,
+    zomma = EXCLUDED.zomma,
+    color = EXCLUDED.color,
+    ultima = EXCLUDED.ultima,
+    veta = EXCLUDED.veta,
+    source = EXCLUDED.source,
+    model_name = EXCLUDED.model_name;
+
+insert_option_price: |
+  INSERT INTO option.option_prices (
+    option_id, timestamp,
+    spot_price, bid, bid_size,
+    ask, ask_size, last, volume, oi,
+    source, incomplete
+  ) VALUES (
+    $1, $2,
+    $3, $4, $5,
+    $6, $7, $8, $9, $10,
+    $11, $12
+  )
+  ON CONFLICT (option_id, timestamp) DO UPDATE SET
+    spot_price = EXCLUDED.spot_price,
+    bid = EXCLUDED.bid,
+    bid_size = EXCLUDED.bid_size,
+    ask = EXCLUDED.ask,
+    ask_size = EXCLUDED.ask_size,
+    last = EXCLUDED.last,
+    volume = EXCLUDED.volume,
+    oi = EXCLUDED.oi,
+    source = EXCLUDED.source,
+    incomplete = EXCLUDED.incomplete;

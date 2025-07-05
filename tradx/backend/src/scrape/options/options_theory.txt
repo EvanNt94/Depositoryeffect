@@ -1,0 +1,56 @@
+Titel: Intraday Hedging Pressure Detection Strategy
+Ziel: Identifikation kurzfristiger Kauf- oder Verkaufsdynamiken, die durch Market Maker Hedging-Aktivitäten ausgelöst werden ("Hedging Pressure")
+
+1. Grundprinzip:
+Market Maker, die Optionen verkaufen, sichern sich durch Kauf oder Verkauf des Underlyings ab, um delta-neutral zu bleiben. Diese Absicherungen können bei massiven Optionspositionen selbst zu spürbarem Kauf- oder Verkaufsdruck auf das Underlying führen – besonders bei Optionen mit kurzer Restlaufzeit und hoher Gamma-Exposition.
+
+2. Relevante Bedingungen für Hedging Pressure:
+- Restlaufzeit (DTE) < 14 Tage (optimal < 7 Tage)
+- Strike-Preis nahe am Spotpreis (ATM-Bereich ±2–5%)
+- Hoher Open Interest und/oder steigendes Volumen
+- Delta in Bewegung (≈ 0.35–0.65 optimal)
+- Steigende implizite Volatilität bei gleichzeitiger Spotpreisbewegung
+
+3. Strategiearchitektur:
+
+(1) Screening Layer (langsames Pre-Filtering)
+- Intervall: 15–60 Minuten
+- Ziel: Auswahl von Optionen mit erhöhtem Hedging-Druck-Potenzial
+- Berechne:
+  - GEX (Gamma Exposure je Strike)
+  - Delta Exposure
+  - Short Ratio des Underlyings (optional)
+  - Relative Volatilitätsveränderung (IV-Jump)
+  - Veränderung Open Interest vs. Volumen
+
+→ Ergebnis: Watchlist mit priorisierten Symbolen
+
+(2) Monitoring Layer (schnelles, fokussiertes Crawling)
+- Intervall: 5–30 Sekunden (nur für Symbole aus der Watchlist)
+- Datenpunkte:
+  - Spotpreis
+  - Option Bid/Ask, Bid/Ask-Size
+  - Delta/Gamma (aus Modell oder Broker)
+  - IV-Verlauf (z. B. IV-Bid vs. IV-Last)
+- Ziel: Echtzeitidentifikation potenzieller Hedging-Triggers
+
+4. Trigger-Indikatoren:
+Ein möglicher Entry-Trigger ergibt sich z. B. durch:
+- Anstieg der IV bei gleichzeitigem Delta-Roll durch Spotpreisbewegung
+- Anstieg der Delta-Exposure in Richtung des Strikes
+- Gleichzeitiger Anstieg der Short Ratio im Underlying (kombinierter Squeeze)
+
+Beispiel-Skala:
+- hedging_score ∈ [0, 100]
+- score > 70 → potenzieller Gamma-Squeeze
+- score > 85 → Eskalationsszenario, Fokus-Crawling aktivieren
+
+5. Ausschlüsse:
+- LEAPS (Optionslaufzeit > 90 Tage) werden ignoriert
+- Deep-OTM Optionen (Delta < 0.10 oder > 0.90) werden gefiltert
+- Illiquide Optionen (OI + Volumen < definierter Schwelle) ausgeschlossen
+
+6. Erweiterungsideen:
+- Visualisierung von GEX als Heatmap
+- Kombinierter Squeeze-Score mit Short Float / Utilization
+- Regression zur Vorhersage von Spotpreisreaktionen basierend auf Delta-Änderungen

@@ -1,0 +1,33 @@
+start: yfinance, 
+langsam auf sx migrieren
+
+workers: 
+mkdir -p ~/.config/systemd/user
+    *.service:
+        # ~/.config/systemd/user/priceworker.service
+        [Unit]
+        Description=Run PriceWorker once daily
+
+        [Service]
+        Type=oneshot
+        ExecStart=/home/a2/anaconda3/envs/tradebot/bin/python /home/a2/code/fin/tradingbot/tradx/backend/src/worker/PriceWorker.py
+        WorkingDirectory=/home/a2/code/fin/tradingbot
+    *.timer:
+        # ~/.config/systemd/user/priceworker.timer
+        [Unit]
+        Description=Daily run for PriceWorker
+
+        [Timer]
+        OnCalendar=*-*-* 03:00:00
+        Persistent=true
+
+        [Install]
+        WantedBy=default.target
+
+    activate:
+        systemctl --user daemon-reload
+        systemctl --user enable --now priceworker.timer
+    
+    status check:
+        systemctl --user list-timers
+        systemctl --user status priceworker.timer

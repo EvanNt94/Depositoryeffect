@@ -1,0 +1,15 @@
+1. market : bilde den markt ab für jeden Markt (+ evtl enums für alles)
+1.1: dividend yield bereinigt mit mcap verlust
+2. varianz, kovarianz
+3. Alpha, beta
+4. kalender implement
+5. forms implement
+6. scraper professionale
+7. linktree verbessern + speichern
+8. news
+9. close vs next open big diff -> news
+10. financial data format
+11. forms analysis
+
+Trading on the Athens Stock Exchange takes place from 10:15 AM to 5:20 PM.
+idee: npv oder so auf mcap um linear modell net income zu skalieren mit prognose KPI (letzte 5y-> npv auf lineare verläufe und diff zu mcap now = KPI)

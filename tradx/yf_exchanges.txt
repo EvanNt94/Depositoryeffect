@@ -1,0 +1,15 @@
+| Börse                 | Endung (Suffix) | Beispiel          |
+| --------------------- | --------------- | ----------------- |
+| Nasdaq (USA)          | (keine)         | `AAPL`            |
+| NYSE (USA)            | (keine)         | `IBM`             |
+| London Stock Exchange | `.L`            | `BP.L`            |
+| Frankfurt             | `.F`            | `BMW.F`           |
+| XETRA                 | `.DE`           | `SAP.DE`          |
+| Paris (Euronext)      | `.PA`           | `AIR.PA`          |
+| Amsterdam             | `.AS`           | `ASML.AS`         |
+| Mailand (Italien)     | `.MI`           | `ENI.MI`          |
+| Zürich                | `.SW`           | `NESN.SW`         |
+| Hong Kong             | `.HK`           | `0700.HK`         |
+| Tokio                 | `.T`            | `7203.T` (Toyota) |
+| Toronto (Kanada)      | `.TO`           | `RY.TO`           |
+| Australien (ASX)      | `.AX`           | `CBA.AX`          |

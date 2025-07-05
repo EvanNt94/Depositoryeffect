@@ -1,0 +1,67 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Black-Scholes-Formeln (Referenz f\"ur C-Implementierung)}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Black-Scholes-Preisformeln}
+
+\subsection*{Call-Option}
+\[
+C(S, K, T, r, \sigma) = S \cdot N(d_1) - K \cdot e^{-rT} \cdot N(d_2)
+\]
+
+\subsection*{Put-Option}
+\[
+P(S, K, T, r, \sigma) = K \cdot e^{-rT} \cdot N(-d_2) - S \cdot N(-d_1)
+\]
+
+\subsection*{Definitionen f\"ur \( d_1 \) und \( d_2 \)}
+\[
+d_1 = \frac{\ln\left(\frac{S}{K}\right) + \left(r + \frac{\sigma^2}{2}\right) T}{\sigma \sqrt{T}}, \quad
+\quad d_2 = d_1 - \sigma \sqrt{T}
+\]
+
+\section*{2. Greeks (optional)}
+
+\subsection*{Delta}
+\[
+\Delta_{\text{call}} = N(d_1), \quad \Delta_{\text{put}} = N(d_1) - 1
+\]
+
+\subsection*{Gamma}
+\[
+\Gamma = \frac{N'(d_1)}{S \sigma \sqrt{T}}
+\]
+
+\subsection*{Vega}
+\[
+\text{Vega} = S \cdot N'(d_1) \cdot \sqrt{T}
+\]
+
+\subsection*{Theta (Call)}
+\[
+\Theta_{\text{call}} = -\frac{S N'(d_1) \sigma}{2\sqrt{T}} - rK e^{-rT} N(d_2)
+\]
+
+\subsection*{Rho (Call)}
+\[
+\text{Rho}_{\text{call}} = K T e^{-rT} N(d_2)
+\]
+
+\vfill
+\textbf{Hinweis:} \( N(\cdot) \) ist die kumulative Verteilungsfunktion der Standardnormalverteilung, \( N'(\cdot) \) die Dichtefunktion.
+
+
+\end{document}

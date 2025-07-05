@@ -1,0 +1,11 @@
+insert_estimates: |
+  INSERT INTO fundamentals.estimates (
+    isin, fiscalYear, fiscalQuarter, estimateType, estimateValue,
+    last_updated
+  ) VALUES (
+    %(isin)s, %(fiscalYear)s, %(fiscalQuarter)s, %(estimateType)s, %(estimateValue)s,
+    %(last_updated)s
+  )
+  ON CONFLICT (isin, fiscalYear, fiscalQuarter, estimateType) DO UPDATE SET
+    estimateValue = EXCLUDED.estimateValue,
+    last_updated = EXCLUDED.last_updated

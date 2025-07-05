@@ -1,0 +1,55 @@
+{
+    "title": "Fonds: Ausverkauf bei Immobilienfonds",
+    "title_detail": {
+        "type": "text/plain",
+        "language": null,
+        "base": "https://api.boerse-frankfurt.de/v1/feeds/news.rss",
+        "value": "Fonds: Ausverkauf bei Immobilienfonds"
+    },
+    "links": [
+        {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://www.boerse-frankfurt.de/nachrichten/fonds-ausverkauf-bei-immobilienfonds"
+        },
+        {
+            "type": "image/jpeg",
+            "href": "https://cms.boerse-frankfurt.de/fileadmin/Bilder/Thementexte/fonds_klappertafel_305x280.jpg",
+            "rel": "enclosure"
+        }
+    ],
+    "link": "https://www.boerse-frankfurt.de/nachrichten/fonds-ausverkauf-bei-immobilienfonds",
+    "summary": "Im Fondshandel an der B\u00f6rse Frankfurt ist der Jahreszeit entsprechend tendenziell etwas weniger los als sonst. F\u00fcr das Segment der Immobilienfonds gilt das aber nicht. Hier sehen sich die H\u00e4ndler mit massiven Abgaben konfrontiert.",
+    "summary_detail": {
+        "type": "text/html",
+        "language": null,
+        "base": "https://api.boerse-frankfurt.de/v1/feeds/news.rss",
+        "value": "Im Fondshandel an der B\u00f6rse Frankfurt ist der Jahreszeit entsprechend tendenziell etwas weniger los als sonst. F\u00fcr das Segment der Immobilienfonds gilt das aber nicht. Hier sehen sich die H\u00e4ndler mit massiven Abgaben konfrontiert."
+    },
+    "published": "Thu, 11 Jul 2024 10:03:00 GMT",
+    "published_parsed": [
+        2024,
+        7,
+        11,
+        10,
+        3,
+        0,
+        3,
+        193,
+        0
+    ],
+    "id": "https://www.boerse-frankfurt.de/nachrichten/fonds-ausverkauf-bei-immobilienfonds",
+    "guidislink": false,
+    "media_thumbnail": [
+        {
+            "url": "https://cms.boerse-frankfurt.de/fileadmin/Bilder/Thementexte/fonds_klappertafel_305x280.jpg"
+        }
+    ],
+    "href": "",
+    "media_content": [
+        {
+            "type": "image/jpeg",
+            "url": "https://cms.boerse-frankfurt.de/fileadmin/Bilder/Thementexte/fonds_klappertafel_305x280.jpg"
+        }
+    ]
+}

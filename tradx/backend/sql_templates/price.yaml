@@ -1,0 +1,13 @@
+insert_price: |
+  INSERT INTO price.stocks (
+      isin, timestamp, open, high, low, close, volume, last_updated
+  ) VALUES (
+      $1, $2, $3, $4, $5, $6, $7, now()
+  )
+  ON CONFLICT (isin, timestamp) DO UPDATE SET
+      open = EXCLUDED.open,
+      high = EXCLUDED.high,
+      low = EXCLUDED.low,
+      close = EXCLUDED.close,
+      volume = EXCLUDED.volume,
+      last_updated = now();

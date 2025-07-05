@@ -1,0 +1,19 @@
+insert_fundamentals: |
+  INSERT INTO fundamentals.fundamentals (
+    isin, fiscalYear, fiscalQuarter, totalRevenue, grossProfit,
+    operatingIncome, netIncome, eps, epsDiluted, sharesOutstanding,
+    last_updated
+  ) VALUES (
+    %(isin)s, %(fiscalYear)s, %(fiscalQuarter)s, %(totalRevenue)s, %(grossProfit)s,
+    %(operatingIncome)s, %(netIncome)s, %(eps)s, %(epsDiluted)s, %(sharesOutstanding)s,
+    %(last_updated)s
+  )
+  ON CONFLICT (isin, fiscalYear, fiscalQuarter) DO UPDATE SET
+    totalRevenue = EXCLUDED.totalRevenue,
+    grossProfit = EXCLUDED.grossProfit,
+    operatingIncome = EXCLUDED.operatingIncome,
+    netIncome = EXCLUDED.netIncome,
+    eps = EXCLUDED.eps,
+    epsDiluted = EXCLUDED.epsDiluted,
+    sharesOutstanding = EXCLUDED.sharesOutstanding,
+    last_updated = EXCLUDED.last_updated
