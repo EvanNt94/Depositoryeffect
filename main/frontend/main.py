@@ -1,21 +1,21 @@
 import tkinter as tk
 from tkinter import ttk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
-from config.config import BASKETS, strategies, FREQUENCY
-from frontend.Datepicker import Datepicker
-import tkinter as tk
-from stockexchange.FetchStock import FetchStock
-from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
-from portfolio.Simulator import Simulator
-from config.Parameter import Parameter
-from strategies.strategy import Strategy
-import numpy as np
+
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from portfolio.Portfolio import Portfolio
+from config.config import BASKETS, FREQUENCY, strategies
+from config.Parameter import Parameter
+from frontend.Datepicker import Datepicker
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from portfolio.Porrtfoliodispo import Portfoliodispo
+from portfolio.Portfolio import Portfolio
+from portfolio.Simulator import Simulator
 from portfolio.SimulatorDispo import SimulatorDispo
+from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
+from stockexchange.FetchStock import FetchStock
+from strategies.strategy import Strategy
 
 
 class MainFrame(tk.Frame):
@@ -126,7 +126,7 @@ class MainFrame(tk.Frame):
         data.to_csv()
 
         normalStrategy: Strategy = strategy["strategy"]
-        dispoStrategy: Strategy = strategy["strategy_depositoryeffect"]
+        dispoStrategy: Strategy = strategy["strategy"]
 
         normalStrategy.set_StockFetcher(stockexchange)
         dispoStrategy.set_StockFetcher(stockexchange)
@@ -142,7 +142,6 @@ class MainFrame(tk.Frame):
         )
 
         # Ticks um 45 Grad drehen und rechtsbündig ausrichten
-
         self.ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 
         self.ax.xaxis.set_major_locator(mdates.AutoDateLocator())
@@ -158,8 +157,12 @@ class MainFrame(tk.Frame):
         dispoPortfolio.simulate()
 
         self.ax.clear()
-        self.updateplot(normalPortfolio, "Normal Strategy", "blue")
-        self.updateplot(dispoPortfolio, "Dispo Strategy", "orange")
+        self.updateplot(normalPortfolio, normalPortfolio.strategy.strategy_name, "blue")
+        self.updateplot(
+            dispoPortfolio,
+            f" {normalPortfolio.strategy.strategy_name} Dispo Strategy",
+            "orange",
+        )
         self.ax.legend()  # Legende nach dem Plotten der Linien aufrufen!
         plt.tight_layout()
         self.canvas.draw()

@@ -19,6 +19,8 @@ llama-cpp-python = "*"
 torch = ">=2.7.1"
 matplotlib = "*"
 tkcalendar = "*"
+openbb = "*"
+alpha-vantage = "*"
 
 [dev-packages]
 black = "*"

@@ -4,7 +4,7 @@ from stockexchange.fetch_stock.StockFetcher import StockFetcher
 
 class Strategy:
     def __init__(self):
-        pass
+        self.strategy_name = None
 
     def set_StockFetcher(self, stockFetcher: StockFetcher):
         self.stockFetcher = stockFetcher

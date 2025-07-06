@@ -1,7 +1,9 @@
-from datetime import timedelta, datetime
-from stockexchange.fetch_stock.StockFetcher import StockFetcher
-import yfinance as yf
+from datetime import datetime, timedelta
+
 import pandas as pd
+import yfinance as yf
+from openbb_terminal.sdk import openbb
+from stockexchange.fetch_stock.StockFetcher import StockFetcher
 
 
 class YFinanceFetcher(StockFetcher):
@@ -9,6 +11,8 @@ class YFinanceFetcher(StockFetcher):
         super().__init__()
 
     def fetch_stock(self, tickers, start_date, end_date):
+        self.get_gewinn()
+        exit()
         datum = datetime.strptime(start_date, "%Y-%m-%d")
         neues_datum = datum - timedelta(days=60)
         start_date_30d = neues_datum.strftime("%Y-%m-%d")
@@ -33,3 +37,12 @@ class YFinanceFetcher(StockFetcher):
             series_outstanding[ticker] = shares_outstanding
 
         return series_outstanding
+
+    def get_gewinn(self):
+        ticker = "AAPL"
+
+        # Fundamentaldaten abrufen (z. B. Income Statement)
+        income = obb.stocks.fa.income(symbol=ticker, period="annual")
+        print(income[["Net Income", "EPS"]])
+
+        exit()

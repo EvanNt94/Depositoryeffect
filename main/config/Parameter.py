@@ -11,18 +11,17 @@ class Parameter:
     ):
         self.start_date = start_date
         self.end_date = end_date
-        self.amount = amount
         self.frequency = frequency
         self.strategy = strategy
         # Prüfen, ob anzahlAktien ein int ist, sonst auf 1 setzen
-        if not isinstance(int (anzahlAktien), int):
+        if anzahlAktien == "" or anzahlAktien is not isinstance(int(anzahlAktien), int):
             self.anzahlAktien = 3
         else:
-            self.anzahlAktien = int (anzahlAktien)
-        if not isinstance(int (amount), int):
+            self.anzahlAktien = int(anzahlAktien)
+        if amount == "" or amount is not isinstance(int(amount), int):
             self.amount = 1000
         else:
-            self.amount = int (amount)
+            self.amount = int(amount)
         self.dispoGrenze = dispoGrenze
 
     def toString(self):
