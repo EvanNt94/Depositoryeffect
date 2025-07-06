@@ -39,7 +39,7 @@ class LowValatilityStrategy(Strategy):
             by="Low-Volatility", ascending=True
         )
 
-        concatiniert_ergebnis.name = "Momentum: " + list(df.index)[pos].strftime(
+        concatiniert_ergebnis.name = "Low-Volatility: " + list(df.index)[pos].strftime(
             "%Y-%m-%d"
         )
 
