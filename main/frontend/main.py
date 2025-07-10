@@ -5,7 +5,8 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from config.config import BASKETS, FREQUENCY, strategies
+from config.baskets.main import BASKETS
+from config.config import FREQUENCY, strategies
 from config.Parameter import Parameter
 from frontend.Datepicker import Datepicker
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -45,6 +46,15 @@ class MainFrame(tk.Frame):
             control_frame, textvariable=dropdown1_var, values=strategy_names
         )
         self.dropdown1.pack(pady=5)
+
+        # Dropdown Basket
+        basket_names = [list(item.keys())[0] for item in BASKETS]
+        print(basket_names)
+        dropdown2_var = tk.StringVar(value=basket_names[0])
+        self.dropdown2 = ttk.Combobox(
+            control_frame, textvariable=dropdown2_var, values=basket_names
+        )
+        self.dropdown2.pack(pady=5)
 
         # Label für die Eingabe
         label = tk.Label(control_frame, text="Betrag in Euro eingeben:")
@@ -102,7 +112,11 @@ class MainFrame(tk.Frame):
 
     def plot_aktualisieren(self):
         # Beispiel: Plot je nach Auswahl
-        tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
+        # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
+        basketStr = self.dropdown2.get()
+        tickers = list(
+            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
+        )[0]
 
         start_date = self.datepicker_from.date_entry.get()
         end_date = self.datepicker_to.date_entry.get()
