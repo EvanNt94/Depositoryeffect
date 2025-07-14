@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import ttk
 
@@ -5,6 +6,9 @@ import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import time
+from Depositoryeffect.main.strategies.metrics import calc_diff_disp_norm
+from Depositoryeffect.results.config import result_path
 from config.baskets.main import BASKETS
 from config.config import FREQUENCY, strategies
 from config.Parameter import Parameter
@@ -169,6 +173,16 @@ class MainFrame(tk.Frame):
 
         normalPortfolio.simulate()
         dispoPortfolio.simulate()
+        #
+        dd = {
+            "config":parameter,
+              "normal_metrics": normalPortfolio.metrics,
+              "dispo_metrics": dispoPortfolio.metrics,
+              "performance_diff": calc_diff_disp_norm(dispoPortfolio.metrics["apy"], normalPortfolio.metrics["apy"])
+            }
+        json.dump(dd, open(result_path/str(int(time.time())), "w"))
+
+
 
         self.ax.clear()
         self.updateplot(normalPortfolio, normalPortfolio.strategy.strategy_name, "blue")

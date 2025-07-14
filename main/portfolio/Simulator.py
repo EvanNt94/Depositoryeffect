@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from Depositoryeffect.main.strategies.metrics import calculate_metrics
 
 import pandas as pd
 from config.Parameter import Parameter
@@ -24,6 +25,7 @@ class Simulator:
         self.portfolio = portfolio
         self.pos_start = None  # Startposition im DataFrame
         self.pos_end = None  # Endposition im DataFrame
+        self.metrics = None
         # Portfolio, das die Aktien und deren Gewichtung enthält
 
     def get_pos(self, df, date, reverse=False):
@@ -172,3 +174,4 @@ class Simulator:
                 ranking["head"], ranking["full"], ranking["current_date"]
             )
             current_date += self.parameter.frequency
+        self.metrics = calculate_metrics(self.portfolio)
