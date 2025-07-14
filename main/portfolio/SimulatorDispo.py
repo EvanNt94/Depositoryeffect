@@ -52,4 +52,4 @@ class SimulatorDispo(Simulator):
             current_portfolio = self.portfolio.simulate_trading(
                 ranking["head"], ranking["full"], ranking["current_date"]
             )
-            current_date += 1
+            current_date += self.parameter.frequency

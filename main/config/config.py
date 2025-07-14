@@ -22,7 +22,7 @@ strategies = [
 
 FREQUENCY = [
     {"id": "once", "name": "1 mal am Tag"},
-    {"id": "twice", "name": "2 mal am Tag"},
+    {"id": "twice", "name": "1 mal alle 2 Tag"},
     {"id": "once_week", "name": "1 mal in der  Woche"},
     {"id": "once_month", "name": "1 mal im Monat"},
 ]

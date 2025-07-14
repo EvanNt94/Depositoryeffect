@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
-from stockexchange.FetchStock import FetchStock
-from config.Parameter import Parameter
-from strategies.strategy import Strategy  #
-from portfolio.Portfolio import Portfolio
+
 import pandas as pd
+from config.Parameter import Parameter
+from portfolio.Portfolio import Portfolio
+from stockexchange.FetchStock import FetchStock
+from strategies.strategy import Strategy
 
 
 class Simulator:
@@ -170,4 +171,4 @@ class Simulator:
             self.portfolio.simulate_trading(
                 ranking["head"], ranking["full"], ranking["current_date"]
             )
-            current_date += 1
+            current_date += self.parameter.frequency

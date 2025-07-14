@@ -11,7 +11,6 @@ class Parameter:
     ):
         self.start_date = start_date
         self.end_date = end_date
-        self.frequency = frequency
         self.strategy = strategy
         # Prüfen, ob anzahlAktien ein int ist, sonst auf 1 setzen
         if anzahlAktien == "" or not isinstance(int(anzahlAktien), int):
@@ -27,6 +26,17 @@ class Parameter:
             self.dispoGrenze = 0
         else:
             self.dispoGrenze = int(dispoGrenze)
+
+        if frequency == "1 mal am Tag":
+            self.frequency = 1
+        elif frequency == "1 mal alle 2 Tag":
+            self.frequency = 2
+        elif frequency == "1 mal in der  Woche":
+            self.frequency = 5
+        elif frequency == "1 mal im Monat":
+            self.frequency = 20
+        else:
+            self.frequency = 1
 
     def toString(self):
         print(
