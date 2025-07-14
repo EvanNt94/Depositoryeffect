@@ -14,16 +14,16 @@ class Parameter:
         self.frequency = frequency
         self.strategy = strategy
         # Prüfen, ob anzahlAktien ein int ist, sonst auf 1 setzen
-        if anzahlAktien == "" or anzahlAktien is not isinstance(int(anzahlAktien), int):
+        if anzahlAktien == "" or not isinstance(int(anzahlAktien), int):
             self.anzahlAktien = 3
         else:
             self.anzahlAktien = int(anzahlAktien)
-        if amount == "" or amount is not isinstance(int(amount), int):
+        if amount == "" or not isinstance(int(amount), int):
             self.amount = 1000
         else:
             self.amount = int(amount)
 
-        if dispoGrenze == "" or dispoGrenze is not isinstance(int(dispoGrenze), int):
+        if dispoGrenze == "" or not isinstance(int(dispoGrenze), int):
             self.dispoGrenze = 0
         else:
             self.dispoGrenze = int(dispoGrenze)

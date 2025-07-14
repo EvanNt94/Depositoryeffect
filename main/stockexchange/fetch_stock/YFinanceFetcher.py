@@ -15,6 +15,10 @@ class YFinanceFetcher(StockFetcher):
         start_date_30d = neues_datum.strftime("%Y-%m-%d")
 
         data = yf.download(tickers, start=start_date_30d, end=end_date)
+        print(data)
+        data = data.dropna(axis=1, how="all")
+        print(data)
+        # exit()
         return data
 
     def get_market_cap(self, series):
