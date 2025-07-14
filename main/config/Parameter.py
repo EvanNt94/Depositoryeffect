@@ -22,7 +22,11 @@ class Parameter:
             self.amount = 1000
         else:
             self.amount = int(amount)
-        self.dispoGrenze = dispoGrenze
+
+        if dispoGrenze == "" or dispoGrenze is not isinstance(int(dispoGrenze), int):
+            self.dispoGrenze = 0
+        else:
+            self.dispoGrenze = int(dispoGrenze)
 
     def toString(self):
         print(

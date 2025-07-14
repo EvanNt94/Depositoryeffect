@@ -22,8 +22,8 @@ class SimulatorDispo(Simulator):
         """
         ticker_with_loss = []
         for invest in last_stocks:
-            if (
-                invest["initial_price_buy"]
+
+            if invest["initial_price_buy"] * (1+ (self.parameter.dispoGrenze/100)
                 > data.iloc[actual_pos][("Close", invest["ticker"])]
             ):
                 ticker_with_loss.append(invest["ticker"])
