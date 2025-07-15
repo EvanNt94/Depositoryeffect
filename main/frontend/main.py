@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import time
-from Depositoryeffect.main.strategies.metrics import calc_diff_disp_norm
-from Depositoryeffect.results.config import result_path
+from strategies.metrics import calc_diff_disp_norm
+from results.config import result_path
 from config.baskets.main import BASKETS
 from config.config import FREQUENCY, strategies
 from config.Parameter import Parameter
@@ -174,10 +174,12 @@ class MainFrame(tk.Frame):
         normalPortfolio.simulate()
         dispoPortfolio.simulate()
         #
+
         dd = {
-            "config":parameter,
+            "config": str(parameter),
               "normal_metrics": normalPortfolio.metrics,
               "dispo_metrics": dispoPortfolio.metrics,
+             
               "performance_diff": calc_diff_disp_norm(dispoPortfolio.metrics["apy"], normalPortfolio.metrics["apy"])
             }
         json.dump(dd, open(result_path/str(int(time.time())), "w"))

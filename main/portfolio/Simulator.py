@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from Depositoryeffect.main.strategies.metrics import calculate_metrics
+from strategies.metrics import calculate_metrics
 
 import pandas as pd
 from config.Parameter import Parameter

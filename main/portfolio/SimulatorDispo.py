@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from config.Parameter import Parameter
 from portfolio.Portfolio import Portfolio
-from Depositoryeffect.main.strategies.metrics import calculate_metrics
+from strategies.metrics import calculate_metrics
 from portfolio.Simulator import Simulator
 from stockexchange.FetchStock import FetchStock
 from strategies.strategy import Strategy
