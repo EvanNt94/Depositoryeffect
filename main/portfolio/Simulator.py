@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from strategies.metrics import calculate_metrics
 
 import pandas as pd
 from config.Parameter import Parameter
 from portfolio.Portfolio import Portfolio
 from stockexchange.FetchStock import FetchStock
+from strategies.metrics import calculate_metrics
 from strategies.strategy import Strategy
 
 

@@ -39,8 +39,28 @@ class MomentumStrategy(Strategy):
             by="Momentum", ascending=False
         )
 
+        momentum_geld = []
+        momentum_close = []
+        momentum_geld.extend([0] * self.parameter.anzahlAktien)
+        momentum_close.extend([1] * self.parameter.anzahlAktien)
+
+        ticker_namen = [f"Geld_{i+1}" for i in range(self.parameter.anzahlAktien)]
+        new_tuples = [("Close", ticker) for ticker in ticker_namen]
+        new_index = pd.MultiIndex.from_tuples(new_tuples, names=["Price", "Ticker"])
+
+        new_row = pd.DataFrame(
+            {"Momentum": momentum_geld, "Close": momentum_close}, index=new_index
+        )
+
+        # Anhängen
+        # concatiniert_ergebnis = pd.concat([concatiniert_ergebnis, new_row])
+
         concatiniert_ergebnis.name = "Momentum: " + list(df.index)[pos].strftime(
             "%Y-%m-%d"
+        )
+
+        concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
+            by="Momentum", ascending=False
         )
 
         return concatiniert_ergebnis

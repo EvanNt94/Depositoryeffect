@@ -1,4 +1,5 @@
 import pandas as pd
+from config.Parameter import Parameter
 from stockexchange.fetch_stock.StockFetcher import StockFetcher
 
 
@@ -6,6 +7,10 @@ class Strategy:
     def __init__(self):
         self.strategy_name = None
         self.outstanding_shares = None
+        self.parameter = None
+
+    def set_parameter(self, parameter: Parameter):
+        self.parameter = parameter
 
     def set_StockFetcher(self, stockFetcher: StockFetcher):
         self.stockFetcher = stockFetcher

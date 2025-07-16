@@ -130,10 +130,10 @@ class MainFrame(tk.Frame):
     def plot_normal_strategy(self, parameter: Parameter):
         portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
 
-        parameter["strategy"].set_StockFetcher(self.stock_exchange)
-        simulator = Simulator(
-            self.stock_exchange, parameter["strategy"], parameter, portfolio
-        )
+        strategy: Strategy = parameter.strategy["strategy"]
+        strategy.set_StockFetcher(self.stock_exchange)
+        strategy.set_parameter(parameter)
+        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.normalSimulator = simulator
         self.updateplot(
@@ -145,10 +145,10 @@ class MainFrame(tk.Frame):
     def plot_dispo_strategy(self, parameter: Parameter):
         portfolio = Portfolio(amount_start=parameter.amount)
 
-        parameter["strategy"].set_StockFetcher(self.stock_exchange)
-        simulator = Simulator(
-            self.stock_exchange, parameter["strategy"], parameter, portfolio
-        )
+        strategy = parameter.strategy["strategy"]
+        strategy.set_StockFetcher(self.stock_exchange)
+        strategy.set_parameter(parameter)
+        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.dispoSimulator = simulator
         self.updateplot(
@@ -162,6 +162,7 @@ class MainFrame(tk.Frame):
 
         strategy = BuyHoldStrategy()
         strategy.set_StockFetcher(self.stock_exchange)
+        strategy.set_parameter(parameter)
         simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.buyHoldSimulator = simulator
@@ -175,6 +176,7 @@ class MainFrame(tk.Frame):
         portfolio = PortfolioUngewichtet(parameter.amount, parameter.anzahlAktien)
         strategy = BuyHoldStrategy()
         strategy.set_StockFetcher(self.stock_exchange)
+        strategy.set_parameter(parameter)
         simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.updateplot(
@@ -236,12 +238,12 @@ class MainFrame(tk.Frame):
         )
         self.stock_exchange = stockexchange
         data = stockexchange.fetch_data()
-        data.to_csv()
+        # data.to_csv()
 
+        self.plot_normal_strategy(parameter)
         # self.plot_dispo_strategy(parameter)
-        # self.plot_normal_strategy(parameter)
-        self.plot_buy_and_hold_weighted_strategy(parameter)
-        self.plot_buy_and_hold_unweighted_strategy(parameter)
+        # self.plot_buy_and_hold_weighted_strategy(parameter)
+        # self.plot_buy_and_hold_unweighted_strategy(parameter)
 
         self.normalSimulator
         dd = {
@@ -252,7 +254,9 @@ class MainFrame(tk.Frame):
             "dispo_metrics": (
                 None if self.dispoSimulator is None else self.dispoSimulator.metrics
             ),
-            "buy_and_hold_metrics": self.buyHoldSimulator.metrics,
+            "buy_and_hold_metrics": (
+                None if self.buyHoldSimulator is None else self.buyHoldSimulator.metrics
+            ),
             "performance_diff": (
                 "Ein atrument is None"
                 if self.dispoSimulator is None or self.normalSimulator is None
