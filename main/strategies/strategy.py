@@ -5,6 +5,7 @@ from stockexchange.fetch_stock.StockFetcher import StockFetcher
 class Strategy:
     def __init__(self):
         self.strategy_name = None
+        self.outstanding_shares = None
 
     def set_StockFetcher(self, stockFetcher: StockFetcher):
         self.stockFetcher = stockFetcher
@@ -19,3 +20,6 @@ class Strategy:
 
     def sort_df(self, df):
         pass
+
+    def set_outstanding_shares(self, outstanding_shares):
+        self.outstanding_shares = outstanding_shares

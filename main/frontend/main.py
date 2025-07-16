@@ -11,17 +11,25 @@ from config.Parameter import Parameter
 from frontend.Datepicker import Datepicker
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from portfolio.Porrtfoliodispo import Portfoliodispo
+from portfolio.PorrtfolioUngewichtet import PortfolioUngewichtet
 from portfolio.Portfolio import Portfolio
 from portfolio.Simulator import Simulator
 from portfolio.SimulatorDispo import SimulatorDispo
 from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
 from stockexchange.FetchStock import FetchStock
+from strategies.buy_hold_strategy import BuyHoldStrategy
 from strategies.strategy import Strategy
 
 
 class MainFrame(tk.Frame):
     def __init__(self):
+        self.start_plot()
+        self.root = None
+        self.stock_exchange = None
+
+    def start_plot(self):
         root = tk.Tk()
+        self.root = root
         root.title("Depository Effect Simulator")
         root.geometry("1200x800")
         self.strategies = strategies
@@ -110,13 +118,72 @@ class MainFrame(tk.Frame):
 
         root.mainloop()
 
-    def plot_aktualisieren(self):
-        # Beispiel: Plot je nach Auswahl
-        # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
-        basketStr = self.dropdown2.get()
-        tickers = list(
-            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
-        )[0]
+    def plot_normal_strategy(self, parameter: Parameter):
+        portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
+        parameter["strategy"].set_StockFetcher(self.stock_exchange)
+        simulator = Simulator(
+            self.stock_exchange, parameter["strategy"], parameter, portfolio
+        )
+        simulator.simulate()
+        self.updateplot(
+            simulator,
+            f" {simulator.strategy.strategy_name} Strategy",
+            "blue",
+        )
+
+    def plot_dispo_strategy(self, parameter: Parameter):
+        portfolio = Portfolio(amount_start=parameter.amount)
+        parameter["strategy"].set_StockFetcher(self.stock_exchange)
+        simulator = Simulator(
+            self.stock_exchange, parameter["strategy"], parameter, portfolio
+        )
+        simulator.simulate()
+        self.updateplot(
+            simulator,
+            f" {simulator.strategy.strategy_name} Strategy",
+            "red",
+        )
+
+    def plot_buy_and_hold_weighted_strategy(self, parameter: Parameter):
+        portfolio = Portfolio(parameter.amount)
+        strategy = BuyHoldStrategy()
+        strategy.set_StockFetcher(self.stock_exchange)
+        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+        simulator.simulate()
+        self.updateplot(
+            simulator,
+            f" {simulator.strategy.strategy_name} Weighted Strategy",
+            "black",
+        )
+
+    def plot_buy_and_hold_unweighted_strategy(self, parameter: Parameter):
+        portfolio = PortfolioUngewichtet(parameter.amount, parameter.anzahlAktien)
+        strategy = BuyHoldStrategy()
+        strategy.set_StockFetcher(self.stock_exchange)
+        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+        simulator.simulate()
+        self.updateplot(
+            simulator,
+            f" {simulator.strategy.strategy_name} Unweighted Strategy",
+            "gray",
+        )
+
+    def plot_matplit_vor_update(self):
+        # Ticks um 45 Grad drehen und rechtsbündig ausrichten
+        self.ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+
+        self.ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+        # --- Styling für bessere Lesbarkeit ---
+        self.ax.set_title("Verbesserter Zeitreihen-Plot", fontsize=16)
+        self.ax.set_xlabel("Datum", fontsize=12)
+        self.ax.set_ylabel("Wert", fontsize=12)
+        self.ax.grid(
+            True, linestyle="--", alpha=0.6
+        )  # Ein Gitter hilft bei der Orientierung
+
+        self.ax.clear()
+
+    def get_parameter(self):
 
         start_date = self.datepicker_from.date_entry.get()
         end_date = self.datepicker_to.date_entry.get()
@@ -134,51 +201,36 @@ class MainFrame(tk.Frame):
         )
 
         print(parameter.toString())
+        return parameter
 
-        stockexchange = FetchStock(tickers, start_date, end_date, YFinanceFetcher())
+    def plot_aktualisieren(self):
+        # Beispiel: Plot je nach Auswahl
+        # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
+        self.plot_matplit_vor_update()
+        basketStr = self.dropdown2.get()
+        tickers = list(
+            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
+        )[0]
+        parameter = self.get_parameter()
+
+        stockexchange = FetchStock(
+            tickers,
+            parameter.start_date,
+            parameter.end_date,
+            YFinanceFetcher(),
+        )
+        self.stock_exchange = stockexchange
         data = stockexchange.fetch_data()
         data.to_csv()
 
-        normalStrategy: Strategy = strategy["strategy"]
-        dispoStrategy: Strategy = strategy["strategy"]
+        # self.plot_dispo_strategy(parameter)
+        # self.plot_normal_strategy(parameter)
+        self.plot_buy_and_hold_weighted_strategy(parameter)
+        self.plot_buy_and_hold_unweighted_strategy(parameter)
 
-        normalStrategy.set_StockFetcher(stockexchange)
-        dispoStrategy.set_StockFetcher(stockexchange)
-        portfolio = Portfolio(amount_start=parameter.amount)
-        # Portfolio, das die Aktien und deren Gewichtung enthält
-        portfoliodispo = Portfoliodispo(
-            amount_start=parameter.amount, anzahl_aktien=parameter.anzahlAktien
-        )
-
-        normalPortfolio = Simulator(stockexchange, normalStrategy, parameter, portfolio)
-        dispoPortfolio = SimulatorDispo(
-            stockexchange, dispoStrategy, parameter, portfoliodispo
-        )
-
-        # Ticks um 45 Grad drehen und rechtsbündig ausrichten
-        self.ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
-
-        self.ax.xaxis.set_major_locator(mdates.AutoDateLocator())
-        # --- Styling für bessere Lesbarkeit ---
-        self.ax.set_title("Verbesserter Zeitreihen-Plot", fontsize=16)
-        self.ax.set_xlabel("Datum", fontsize=12)
-        self.ax.set_ylabel("Wert", fontsize=12)
-        self.ax.grid(
-            True, linestyle="--", alpha=0.6
-        )  # Ein Gitter hilft bei der Orientierung
-
-        normalPortfolio.simulate()
-        dispoPortfolio.simulate()
-
-        self.ax.clear()
-        self.updateplot(normalPortfolio, normalPortfolio.strategy.strategy_name, "blue")
-        self.updateplot(
-            dispoPortfolio,
-            f" {normalPortfolio.strategy.strategy_name} Dispo Strategy",
-            "orange",
-        )
         self.ax.legend()  # Legende nach dem Plotten der Linien aufrufen!
         plt.tight_layout()
+        plt.xticks(rotation=45, ha="right")
         self.canvas.draw()
 
         # --- 4. Event-Handler-Funktion definieren ---

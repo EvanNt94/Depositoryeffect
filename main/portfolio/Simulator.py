@@ -24,6 +24,7 @@ class Simulator:
         self.portfolio = portfolio
         self.pos_start = None  # Startposition im DataFrame
         self.pos_end = None  # Endposition im DataFrame
+        self.strategy.set_outstanding_shares(self.outstanding_shares)
         # Portfolio, das die Aktien und deren Gewichtung enthält
 
     def get_pos(self, df, date, reverse=False):
