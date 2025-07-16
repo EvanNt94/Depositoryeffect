@@ -162,7 +162,7 @@ class MainFrame(tk.Frame):
         self.dispoSimulator = simulator
         self.updateplot(
             simulator,
-            f" {simulator.strategy.strategy_name} Strategy",
+            f" {simulator.strategy.strategy_name} Dispo Strategy",
             "red",
         )
 
