@@ -11,7 +11,7 @@ class YFinanceFetcher(StockFetcher):
 
     def fetch_stock(self, tickers, start_date, end_date):
         datum = datetime.strptime(start_date, "%Y-%m-%d")
-        neues_datum = datum - timedelta(days=60)
+        neues_datum = datum - timedelta(days=400)
         start_date_30d = neues_datum.strftime("%Y-%m-%d")
 
         data = yf.download(tickers, start=start_date_30d, end=end_date)

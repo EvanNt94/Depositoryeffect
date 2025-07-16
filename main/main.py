@@ -1,8 +1,9 @@
-from frontend.main import MainFrame
-from stockexchange.FetchStock import FetchStock
-from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
-from config.config import BASKETS
 import logging
+
+from config.config import BASKETS
+from frontend.main import MainFrame
+from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
+from stockexchange.FetchStock import FetchStock
 
 
 def __main__():

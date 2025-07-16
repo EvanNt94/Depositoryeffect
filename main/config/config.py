@@ -1,6 +1,7 @@
 from strategies.high_valatility_strategy import HighValatilityStrategy
 from strategies.low_valatility_strategy import LowValatilityStrategy
 from strategies.momentum_strategy import MomentumStrategy
+from strategies.movingAverageCrossoverStrategy import MovingAverageCrossoverStrategy
 from strategies.reversion_strategy import ReversionStrategy
 
 strategies = [
@@ -11,10 +12,10 @@ strategies = [
     {"name": "low_volatility", "strategy": LowValatilityStrategy()},
     {"name": "high_volatility", "strategy": HighValatilityStrategy()},
     {"name": "mean_reversion", "strategy": ReversionStrategy()},
+    {"name": "moving_average_crossover", "strategy": MovingAverageCrossoverStrategy()},
     {"name": "random", "strategy": None},
     {"name": "value", "strategy": None, "strategy_depositoryeffect": None},
     {"name": "high_dividend", "strategy": None, "strategy_depositoryeffect": None},
-    {"name": "growth", "strategy": None, "strategy_depositoryeffect": None},
     {"name": "market_cap", "strategy": None, "strategy_depositoryeffect": None},
     {"name": "equal_weighted", "strategy": None, "strategy_depositoryeffect": None},
     {"name": "sector_rotation", "strategy": None, "strategy_depositoryeffect": None},

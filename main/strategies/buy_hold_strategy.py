@@ -31,9 +31,13 @@ class BuyHoldStrategy(Strategy):
             keys=["Close"],
         )
 
-        concatiniert_ergebnis["Outstanding Shares"] = self.outstanding_shares
+        outstanding_shares = self.outstanding_shares.copy()
+        outstanding_shares.index = pd.MultiIndex.from_product(
+            [["Close"], outstanding_shares.index]
+        )
+        concatiniert_ergebnis["Outstanding Shares"] = outstanding_shares
         concatiniert_ergebnis["Market Cap"] = (
-            concatiniert_ergebnis["Close"] * self.outstanding_shares
+            concatiniert_ergebnis["Close"] * concatiniert_ergebnis["Outstanding Shares"]
         )
 
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
