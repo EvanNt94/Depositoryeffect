@@ -15,12 +15,11 @@ class Portfolio:
         self.first_buy = True
         self.logger = Logger(__name__).logger
 
-    def value_series(self)-> pd.Series:
+    def value_series(self) -> pd.Series:
         data = {}
         for date, entry in self.portfolio.items():
             total_value = sum(
-                inv["shares"] * inv["price_actual"]
-                for inv in entry["invest"]
+                inv["shares"] * inv["price_actual"] for inv in entry["invest"]
             )
             data[pd.to_datetime(date)] = total_value
 

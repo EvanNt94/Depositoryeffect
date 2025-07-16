@@ -1,6 +1,8 @@
 import json
+import os
 import time
 import tkinter as tk
+from datetime import date
 from tkinter import ttk
 
 import matplotlib.dates as mdates
@@ -27,12 +29,12 @@ from strategies.strategy import Strategy
 
 class MainFrame(tk.Frame):
     def __init__(self):
-        self.start_plot()
         self.root = None
         self.stock_exchange = None
-        self.normalPortfolio = None
-        self.dispoPortfolio = None
-        self.buyHoldPortfolio = None
+        self.normalSimulator: Simulator = None
+        self.dispoSimulator: Simulator = None
+        self.buyHoldSimulator: Simulator = None
+        self.start_plot()
 
     def start_plot(self):
         root = tk.Tk()
@@ -127,12 +129,13 @@ class MainFrame(tk.Frame):
 
     def plot_normal_strategy(self, parameter: Parameter):
         portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
-        self.normalPortfolio = portfolio
+
         parameter["strategy"].set_StockFetcher(self.stock_exchange)
         simulator = Simulator(
             self.stock_exchange, parameter["strategy"], parameter, portfolio
         )
         simulator.simulate()
+        self.normalSimulator = simulator
         self.updateplot(
             simulator,
             f" {simulator.strategy.strategy_name} Strategy",
@@ -141,12 +144,13 @@ class MainFrame(tk.Frame):
 
     def plot_dispo_strategy(self, parameter: Parameter):
         portfolio = Portfolio(amount_start=parameter.amount)
-        self.dispoPortfolio = portfolio
+
         parameter["strategy"].set_StockFetcher(self.stock_exchange)
         simulator = Simulator(
             self.stock_exchange, parameter["strategy"], parameter, portfolio
         )
         simulator.simulate()
+        self.dispoSimulator = simulator
         self.updateplot(
             simulator,
             f" {simulator.strategy.strategy_name} Strategy",
@@ -155,11 +159,12 @@ class MainFrame(tk.Frame):
 
     def plot_buy_and_hold_weighted_strategy(self, parameter: Parameter):
         portfolio = Portfolio(parameter.amount)
-        self.buyHoldPortfolio = portfolio
+
         strategy = BuyHoldStrategy()
         strategy.set_StockFetcher(self.stock_exchange)
         simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
+        self.buyHoldSimulator = simulator
         self.updateplot(
             simulator,
             f" {simulator.strategy.strategy_name} Weighted Strategy",
@@ -238,21 +243,41 @@ class MainFrame(tk.Frame):
         self.plot_buy_and_hold_weighted_strategy(parameter)
         self.plot_buy_and_hold_unweighted_strategy(parameter)
 
+        self.normalSimulator
         dd = {
             "config": str(parameter),
-            "normal_metrics": self.normalPortfolio.metrics,
-            "dispo_metrics": self.dispoPortfolio.metrics,
-            "buy_and_hold_metrics": self.buyHoldPortfolio.metrics
-            "performance_diff": calc_diff_disp_norm(
-                dispoPortfolio.metrics["apy"], normalPortfolio.metrics["apy"]
+            "normal_metrics": (
+                None if self.normalSimulator is None else self.normalSimulator.metrics
+            ),
+            "dispo_metrics": (
+                None if self.dispoSimulator is None else self.dispoSimulator.metrics
+            ),
+            "buy_and_hold_metrics": self.buyHoldSimulator.metrics,
+            "performance_diff": (
+                "Ein atrument is None"
+                if self.dispoSimulator is None or self.normalSimulator is None
+                else calc_diff_disp_norm(
+                    self.dispoSimulator.metrics["apy"],
+                    self.normalSimulator.metrics["apy"],
+                )
             ),
         }
-        json.dump(dd, open(result_path / str(int(time.time())), "w"))
+        id = int(time.time())
+        path = f"{date.today()}-{basketStr}-AA-{parameter.anzahlAktien}-DG-{parameter.dispoGrenze}-{id}"
+        full_path = os.path.join(result_path, f"{path}.json")
+
+        with open(full_path, "w", encoding="utf-8") as f:
+            json.dump(dd, f, ensure_ascii=False, indent=4)
+
+        # json.dump(dd, open(full_path, "w"))
 
         self.ax.legend()  # Legende nach dem Plotten der Linien aufrufen!
         plt.tight_layout()
         plt.xticks(rotation=45, ha="right")
         self.canvas.draw()
+
+        plotPath = os.path.join(result_path, f"{path}.png")
+        plt.savefig(plotPath, dpi=300)  # dpi=300 für hohe Qualität
 
         # --- 4. Event-Handler-Funktion definieren ---
 
