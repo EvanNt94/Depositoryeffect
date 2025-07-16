@@ -37,6 +37,9 @@ class Parameter:
             self.frequency = 20
         else:
             self.frequency = 1
+    
+    def __str__(self):
+        return f"Start-Date: {self.start_date}, end date: {self.end_date}, amount: {self.amount}, frequency: {self.frequency}, strategy: {self.strategy}, AnzahlAktien: {self.anzahlAktien}, Dispogrenze: {self.dispoGrenze}"
 
     def toString(self):
         print(

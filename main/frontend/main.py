@@ -1,3 +1,5 @@
+import json
+import time
 import tkinter as tk
 from tkinter import ttk
 
@@ -15,9 +17,11 @@ from portfolio.PorrtfolioUngewichtet import PortfolioUngewichtet
 from portfolio.Portfolio import Portfolio
 from portfolio.Simulator import Simulator
 from portfolio.SimulatorDispo import SimulatorDispo
+from results.config import result_path
 from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
 from stockexchange.FetchStock import FetchStock
 from strategies.buy_hold_strategy import BuyHoldStrategy
+from strategies.metrics import calc_diff_disp_norm
 from strategies.strategy import Strategy
 
 
@@ -26,6 +30,9 @@ class MainFrame(tk.Frame):
         self.start_plot()
         self.root = None
         self.stock_exchange = None
+        self.normalPortfolio = None
+        self.dispoPortfolio = None
+        self.buyHoldPortfolio = None
 
     def start_plot(self):
         root = tk.Tk()
@@ -120,6 +127,7 @@ class MainFrame(tk.Frame):
 
     def plot_normal_strategy(self, parameter: Parameter):
         portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
+        self.normalPortfolio = portfolio
         parameter["strategy"].set_StockFetcher(self.stock_exchange)
         simulator = Simulator(
             self.stock_exchange, parameter["strategy"], parameter, portfolio
@@ -133,6 +141,7 @@ class MainFrame(tk.Frame):
 
     def plot_dispo_strategy(self, parameter: Parameter):
         portfolio = Portfolio(amount_start=parameter.amount)
+        self.dispoPortfolio = portfolio
         parameter["strategy"].set_StockFetcher(self.stock_exchange)
         simulator = Simulator(
             self.stock_exchange, parameter["strategy"], parameter, portfolio
@@ -146,6 +155,7 @@ class MainFrame(tk.Frame):
 
     def plot_buy_and_hold_weighted_strategy(self, parameter: Parameter):
         portfolio = Portfolio(parameter.amount)
+        self.buyHoldPortfolio = portfolio
         strategy = BuyHoldStrategy()
         strategy.set_StockFetcher(self.stock_exchange)
         simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
@@ -227,6 +237,17 @@ class MainFrame(tk.Frame):
         # self.plot_normal_strategy(parameter)
         self.plot_buy_and_hold_weighted_strategy(parameter)
         self.plot_buy_and_hold_unweighted_strategy(parameter)
+
+        dd = {
+            "config": str(parameter),
+            "normal_metrics": self.normalPortfolio.metrics,
+            "dispo_metrics": self.dispoPortfolio.metrics,
+            "buy_and_hold_metrics": self.buyHoldPortfolio.metrics
+            "performance_diff": calc_diff_disp_norm(
+                dispoPortfolio.metrics["apy"], normalPortfolio.metrics["apy"]
+            ),
+        }
+        json.dump(dd, open(result_path / str(int(time.time())), "w"))
 
         self.ax.legend()  # Legende nach dem Plotten der Linien aufrufen!
         plt.tight_layout()

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from config.Parameter import Parameter
 from portfolio.Portfolio import Portfolio
+from strategies.metrics import calculate_metrics
 from portfolio.Simulator import Simulator
 from stockexchange.FetchStock import FetchStock
 from strategies.strategy import Strategy
@@ -53,3 +54,5 @@ class SimulatorDispo(Simulator):
                 ranking["head"], ranking["full"], ranking["current_date"]
             )
             current_date += self.parameter.frequency
+        self.metrics = calculate_metrics(self.portfolio)
+        
