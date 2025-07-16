@@ -298,7 +298,7 @@ class MainFrame(tk.Frame):
             ),
         }
         id = int(time.time())
-        path = f"{date.today()}-{basekt_str}-AA-{parameter.anzahlAktien}-DG-{parameter.dispoGrenze}-{id}-strategy-{parameter.strategy["strategy"]["name"]}-frqeuenc-{parameter.frequency}-{id}"
+        path = f"{date.today()}-{basekt_str}-AA-{parameter.anzahlAktien}-DG-{parameter.dispoGrenze}-{id}-strategy-{parameter.strategy["strategy"].strategy_name}-frqeuenc-{parameter.frequency}-{id}"
         full_path = os.path.join(result_path, f"{path}.json")
 
         with open(full_path, "w", encoding="utf-8") as f:
