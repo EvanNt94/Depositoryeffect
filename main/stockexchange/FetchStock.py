@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 from stockexchange.fetch_stock import StockFetcher
 
 
@@ -12,6 +12,8 @@ class FetchStock:
         self.data = None
         self.prepared_data = None
         self.outstanding_shares = None
+        self.eps = {}
+        self.gewinn = {}
 
     def prepare_data(self, data):
         self.prepared_data = data[["Close"]]
@@ -28,6 +30,8 @@ class FetchStock:
         self.data = self.fetcher.fetch_stock(
             self.symbol, self.start_date, self.end_date
         ).copy()
+        self.eps = self.fetcher.eps
+        self.gewinn = self.fetcher.gewinn
         return self.prepare_data(self.data)
 
     def get_market_cap(self, series):

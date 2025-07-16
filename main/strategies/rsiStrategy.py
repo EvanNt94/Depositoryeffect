@@ -24,6 +24,7 @@ class RSIStrategy(Strategy):
         # pos = df.index.get_loc(start_date)
         pos = actual_pos
         close_series_today = df.iloc[pos]
+        df_letzte_15 = df.iloc[(pos - self.rsi_period - 10) : pos]
 
         # Concatenaten
         concatiniert_ergebnis = pd.concat(
@@ -32,47 +33,30 @@ class RSIStrategy(Strategy):
             keys=["Close"],
         )
 
-        concatiniert_ergebnis["RSI"] = (
-            concatiniert_ergebnis["Close"].rolling(window=50).mean()
-        )
-        concatiniert_ergebnis["SMA_200"] = (
-            concatiniert_ergebnis["Close"].rolling(window=200).mean()
-        )
+        rsi_data = {}
 
-        # Crossover-Signale erzeugen
-        concatiniert_ergebnis["Signal"] = 0
-        # Buy
-        mask = (
-            concatiniert_ergebnis["SMA_50"].shift(1)
-            < concatiniert_ergebnis["SMA_200"].shift(1)
-        ) & (concatiniert_ergebnis["SMA_50"] >= concatiniert_ergebnis["SMA_200"])
+        for ticker in df_letzte_15["Close"].columns:
+            close_series = df_letzte_15["Close"][ticker]
+            rsi_series = self.berechne_rsi(close_series, window=self.rsi_period)
+            rsi_data[ticker] = rsi_series
 
-        concatiniert_ergebnis.loc[mask, "Signal"] = (
-            concatiniert_ergebnis.loc[mask, "SMA_50"]
-            - concatiniert_ergebnis.loc[mask, "SMA_200"]
-        )
-
-        concatiniert_ergebnis["Outstanding Shares"] = self.outstanding_shares
-        concatiniert_ergebnis["Market Cap"] = (
-            concatiniert_ergebnis["Close"] * self.outstanding_shares
-        )
-
+        rsi_df = pd.Series(rsi_data, name="RSI")
+        rsi_df.index = pd.MultiIndex.from_product([["Close"], rsi_df.index])
+        concatiniert_ergebnis["RSI"] = rsi_df
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
-            by="Signal", ascending=False
+            by="RSI", ascending=True
         )
 
-        concatiniert_ergebnis.name = "Signal: " + list(df.index)[pos].strftime(
-            "%Y-%m-%d"
-        )
+        concatiniert_ergebnis.name = "RSI: " + list(df.index)[pos].strftime("%Y-%m-%d")
 
         return concatiniert_ergebnis
 
-    def berechne_rsi(close_prices: pd.Series, window: int = 14) -> pd.Series:
+    def berechne_rsi(self, close_prices: pd.Series, window: int = 14) -> pd.Series:
         delta = close_prices.diff()
 
         # Gewinne und Verluste trennen
-        gain = delta.clip(lower=0)
-        loss = -delta.clip(upper=0)
+        gain = delta.where(delta > 0, 0)
+        loss = -delta.where(delta < 0, 0)
 
         # Gleitender Durchschnitt (Exponentiell oder Simple)
         avg_gain = gain.rolling(window=window, min_periods=window).mean()
@@ -82,8 +66,8 @@ class RSIStrategy(Strategy):
         rs = avg_gain / avg_loss
 
         # RSI berechnen
-        rsi = 100 - (100 / (1 + rs))
+        rsi = 100 - (100 / (1 + rs.iloc[-1]))
         return rsi
 
     def sort_df(self, df):
-        return df.sort_values(by="Signal", ascending=False).copy()
+        return df.sort_values(by="RSI", ascending=True).copy()

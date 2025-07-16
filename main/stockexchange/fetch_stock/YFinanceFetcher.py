@@ -8,8 +8,13 @@ from stockexchange.fetch_stock.StockFetcher import StockFetcher
 class YFinanceFetcher(StockFetcher):
     def __init__(self):
         super().__init__()
+        self.tickers = []
+        self.gewinn = {}
+        self.eps = {}
 
     def fetch_stock(self, tickers, start_date, end_date):
+        self.tickers = tickers
+        self.get_gewinn()
         datum = datetime.strptime(start_date, "%Y-%m-%d")
         neues_datum = datum - timedelta(days=400)
         start_date_30d = neues_datum.strftime("%Y-%m-%d")
@@ -44,10 +49,28 @@ class YFinanceFetcher(StockFetcher):
         return series_outstanding
 
     def get_gewinn(self):
-        ticker = "AAPL"
 
-        # Fundamentaldaten abrufen (z. B. Income Statement)
-        income = obb.stocks.fa.income(symbol=ticker, period="annual")
-        print(income[["Net Income", "EPS"]])
+        for ticker in self.tickers:
+            yf_ticker = yf.Ticker(ticker)
+            earnings = yf_ticker.income_stmt  # Jahreszahlen (Jahresabschluss)
+            if "Net Income" in earnings.index:
+                net_income_yearly = earnings.loc["Net Income"]
+                net_income_dict = {
+                    date.year: value
+                    for date, value in net_income_yearly.items()
+                    if pd.notna(value)
+                }
+                self.gewinn[ticker] = net_income_dict
+            else:
+                self.gewinn[ticker] = {}
+                self.eps[ticker] = {}
+                continue
 
-        exit()
+            if "Diluted EPS" in earnings.index:
+                net_income_yearly = earnings.loc["Diluted EPS"]
+                net_income_dict = {
+                    date.year: value
+                    for date, value in net_income_yearly.items()
+                    if pd.notna(value)
+                }
+                self.eps[ticker] = net_income_dict

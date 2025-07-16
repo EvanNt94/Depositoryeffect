@@ -1,6 +1,7 @@
 class StockFetcher:
     def __init__(self):
-        pass
+        self.gewinn = {}
+        self.eps = {}
 
     def fetch_stock(self, tickers, start_date, end_date):
         pass

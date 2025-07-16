@@ -19,11 +19,13 @@ from portfolio.PorrtfolioUngewichtet import PortfolioUngewichtet
 from portfolio.Portfolio import Portfolio
 from portfolio.Simulator import Simulator
 from portfolio.SimulatorDispo import SimulatorDispo
+from portfolio.SimulatorRandom import SimulatorRandom
 from results.config import result_path
 from stockexchange.fetch_stock.YFinanceFetcher import YFinanceFetcher
 from stockexchange.FetchStock import FetchStock
 from strategies.buy_hold_strategy import BuyHoldStrategy
 from strategies.metrics import calc_diff_disp_norm
+from strategies.random_strategy import RandomStrategy
 from strategies.strategy import Strategy
 
 
@@ -35,6 +37,7 @@ class MainFrame(tk.Frame):
         self.dispoSimulator: Simulator = None
         self.buyHoldSimulator: Simulator = None
         self.start_plot()
+        self.simulate()
 
     def start_plot(self):
         root = tk.Tk()
@@ -148,7 +151,13 @@ class MainFrame(tk.Frame):
         strategy = parameter.strategy["strategy"]
         strategy.set_StockFetcher(self.stock_exchange)
         strategy.set_parameter(parameter)
-        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+
+        if isinstance(strategy, RandomStrategy):
+            simulator = SimulatorRandom(
+                self.stock_exchange, strategy, parameter, portfolio
+            )
+        else:
+            simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.dispoSimulator = simulator
         self.updateplot(
@@ -220,16 +229,34 @@ class MainFrame(tk.Frame):
         print(parameter.toString())
         return parameter
 
-    def plot_aktualisieren(self):
-        # Beispiel: Plot je nach Auswahl
-        # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
-        self.plot_matplit_vor_update()
-        basketStr = self.dropdown2.get()
-        tickers = list(
-            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
-        )[0]
-        parameter = self.get_parameter()
+    def simulate(self):
 
+        # Alle baskets
+        # Zeitraum fix 2000-2024
+        dispogrenzen = [0, 2, 5]
+        diversifikations = [1, 10, 20]
+        frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
+        strategien = list(
+            filter(lambda x: x["name"] != "growth" or x["name" != "kgv"], strategies)
+        )
+        for basket in BASKETS:
+            for dispogrenze in dispogrenzen:
+                for frequency in frequenz:
+                    for diversifikation in diversifikations:
+                        for strategy in strategien:
+                            parameter = Parameter(
+                                "",
+                                "",
+                                "",
+                                frequency,
+                                strategy,
+                                diversifikation,
+                                dispogrenze,
+                            )
+                            self.update(basket.values()[0], basket.keys()[0], parameter)
+
+    def update(self, tickers, basekt_str, parameter):
+        self.plot_matplit_vor_update()
         stockexchange = FetchStock(
             tickers,
             parameter.start_date,
@@ -241,9 +268,9 @@ class MainFrame(tk.Frame):
         # data.to_csv()
 
         self.plot_normal_strategy(parameter)
-        # self.plot_dispo_strategy(parameter)
-        # self.plot_buy_and_hold_weighted_strategy(parameter)
-        # self.plot_buy_and_hold_unweighted_strategy(parameter)
+        self.plot_dispo_strategy(parameter)
+        self.plot_buy_and_hold_weighted_strategy(parameter)
+        self.plot_buy_and_hold_unweighted_strategy(parameter)
 
         self.normalSimulator
         dd = {
@@ -267,7 +294,7 @@ class MainFrame(tk.Frame):
             ),
         }
         id = int(time.time())
-        path = f"{date.today()}-{basketStr}-AA-{parameter.anzahlAktien}-DG-{parameter.dispoGrenze}-{id}"
+        path = f"{date.today()}-{basekt_str}-AA-{parameter.anzahlAktien}-DG-{parameter.dispoGrenze}-{id}-strategy-{parameter.strategy["strategy"]["name"]}-frqeuenc-{parameter.frequency}-{id}"
         full_path = os.path.join(result_path, f"{path}.json")
 
         with open(full_path, "w", encoding="utf-8") as f:
@@ -284,6 +311,17 @@ class MainFrame(tk.Frame):
         plt.savefig(
             plotPath, dpi=300, bbox_inches="tight", pad_inches=0.3
         )  # dpi=300 für hohe Qualität
+
+    def plot_aktualisieren(self):
+        # Beispiel: Plot je nach Auswahl
+        # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
+
+        basketStr = self.dropdown2.get()
+        tickers = list(
+            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
+        )[0]
+        parameter = self.get_parameter()
+        self.update(tickers, basketStr, parameter)
 
         # --- 4. Event-Handler-Funktion definieren ---
 

@@ -9,8 +9,6 @@ class Parameter:
         anzahlAktien: int,
         dispoGrenze: int,
     ):
-        self.start_date = start_date
-        self.end_date = end_date
         self.strategy = strategy
         # Prüfen, ob anzahlAktien ein int ist, sonst auf 1 setzen
         if anzahlAktien == "" or not isinstance(int(anzahlAktien), int):
@@ -33,11 +31,15 @@ class Parameter:
             self.frequency = 2
         elif frequency == "1 mal in der  Woche":
             self.frequency = 5
-        elif frequency == "1 mal im Monat":
+        elif frequency == "Alle 4 Wochen":
             self.frequency = 20
         else:
             self.frequency = 1
-    
+        if start_date == "":
+            self.start_date = "2020-01-01"
+        if end_date == "":
+            self.end_date = "2025-01-01"
+
     def __str__(self):
         return f"Start-Date: {self.start_date}, end date: {self.end_date}, amount: {self.amount}, frequency: {self.frequency}, strategy: {self.strategy}, AnzahlAktien: {self.anzahlAktien}, Dispogrenze: {self.dispoGrenze}"
 

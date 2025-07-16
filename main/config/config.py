@@ -1,8 +1,12 @@
+from strategies.GrowthStratregy import GrowthStrategy
 from strategies.high_valatility_strategy import HighValatilityStrategy
+from strategies.KGVStratregy import KGVStrategy
 from strategies.low_valatility_strategy import LowValatilityStrategy
 from strategies.momentum_strategy import MomentumStrategy
 from strategies.movingAverageCrossoverStrategy import MovingAverageCrossoverStrategy
+from strategies.random_strategy import RandomStrategy
 from strategies.reversion_strategy import ReversionStrategy
+from strategies.rsiStrategy import RSIStrategy
 
 strategies = [
     {
@@ -13,19 +17,20 @@ strategies = [
     {"name": "high_volatility", "strategy": HighValatilityStrategy()},
     {"name": "mean_reversion", "strategy": ReversionStrategy()},
     {"name": "moving_average_crossover", "strategy": MovingAverageCrossoverStrategy()},
-    {"name": "random", "strategy": None},
-    {"name": "value", "strategy": None, "strategy_depositoryeffect": None},
-    {"name": "high_dividend", "strategy": None, "strategy_depositoryeffect": None},
-    {"name": "market_cap", "strategy": None, "strategy_depositoryeffect": None},
-    {"name": "equal_weighted", "strategy": None, "strategy_depositoryeffect": None},
-    {"name": "sector_rotation", "strategy": None, "strategy_depositoryeffect": None},
+    {"name": "RSI", "strategy": RSIStrategy()},
+    {"name": "random", "strategy": RandomStrategy()},
+    {
+        "name": "growth",
+        "strategy": GrowthStrategy(),
+    },
+    {"name": "kgv", "strategy": KGVStrategy()},
 ]
 
 FREQUENCY = [
     {"id": "once", "name": "1 mal am Tag"},
     {"id": "twice", "name": "1 mal alle 2 Tag"},
     {"id": "once_week", "name": "1 mal in der  Woche"},
-    {"id": "once_month", "name": "1 mal im Monat"},
+    {"id": "once_month", "name": "Alle 4 Wochen"},
 ]
 
 # --- 1. Große Baskets (repräsentative Auswahl, Stand 2024) ---
