@@ -277,7 +277,9 @@ class MainFrame(tk.Frame):
         self.canvas.draw()
 
         plotPath = os.path.join(result_path, f"{path}.png")
-        plt.savefig(plotPath, dpi=300)  # dpi=300 für hohe Qualität
+        plt.savefig(
+            plotPath, dpi=300, bbox_inches="tight", pad_inches=0.3
+        )  # dpi=300 für hohe Qualität
 
         # --- 4. Event-Handler-Funktion definieren ---
 
