@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from strategies.metrics import calculate_metrics
 
 import pandas as pd
 from config.Parameter import Parameter
 from portfolio.Portfolio import Portfolio
 from stockexchange.FetchStock import FetchStock
+from strategies.metrics import calculate_metrics
 from strategies.strategy import Strategy
 
 
@@ -25,6 +25,7 @@ class Simulator:
         self.portfolio = portfolio
         self.pos_start = None  # Startposition im DataFrame
         self.pos_end = None  # Endposition im DataFrame
+        self.strategy.set_outstanding_shares(self.outstanding_shares)
         self.metrics = None
         # Portfolio, das die Aktien und deren Gewichtung enthält
 

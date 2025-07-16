@@ -1,11 +1,14 @@
-import pandas as pd
-from portfolio.Portfolio import Portfolio
-from Logger import Logger
+import json
 
 import numpy as np
+import pandas as pd
+from Logger import Logger
+from portfolio.Portfolio import Portfolio
+
 
 def calc_diff_disp_norm(apyDispo, apyNormal):
     return apyDispo - apyNormal
+
 
 def calculate_metrics(portfolio: Portfolio, risk_free_rate: float = 0.0) -> pd.Series:
     """
@@ -36,9 +39,10 @@ def calculate_metrics(portfolio: Portfolio, risk_free_rate: float = 0.0) -> pd.S
     # Tagesrenditen
     daily_returns = series.pct_change(fill_method=None).dropna()
 
-
     if daily_returns.empty:
-        raise ValueError("Portfolio enthält zu wenige Datenpunkte für Metrik-Berechnung.")
+        raise ValueError(
+            "Portfolio enthält zu wenige Datenpunkte für Metrik-Berechnung."
+        )
 
     # Durchschnittsrendite & Volatilität
     avg_return = daily_returns.mean()
@@ -68,21 +72,31 @@ def calculate_metrics(portfolio: Portfolio, risk_free_rate: float = 0.0) -> pd.S
             except Exception as e:
                 print(f"[ERROR] Fehler bei APY-Berechnung: {e}")
         else:
-            print(f"[WARN] Ungültige Werte für APY-Berechnung: start={start}, years={years}")
+            print(
+                f"[WARN] Ungültige Werte für APY-Berechnung: start={start}, years={years}"
+            )
     else:
         print(f"[WARN] Start oder Endwert ist NaN: start={start}, end={end}")
 
+    safe_dict = {
+        k.strftime("%Y-%m-%d %H:%M"): v for k, v in portfolio.portfolio.items()
+    }
+
+    safe_amount = {str(k): v for k, v in portfolio.current_amount.items()}
 
     metrics = {
-            "avg_return_daily": avg_return,
-            "sigma_daily": sigma,
-            "sharpe_ratio": sharpe_ratio,
-            "max_drawdown": max_drawdown,
-            "apy": apy,
-        }
-
+        "avg_return_daily": avg_return,
+        "sigma_daily": sigma,
+        "sharpe_ratio": sharpe_ratio,
+        "max_drawdown": max_drawdown,
+        "apy": apy,
+        "start_amount": portfolio.amount_start,
+        "end_amount": portfolio.current_amount_value,
+        "amount_list": safe_amount,
+        "portfolio_history": safe_dict,
+    }
 
     # Logge die Ergebnisse
-    Logger(__name__).logger.info(f"Portfolio-Metriken:\n{metrics}")
+    # Logger(__name__).logger.info(f"Portfolio-Metriken:\n{metrics}")
 
     return metrics

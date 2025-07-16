@@ -34,7 +34,7 @@ class YFinanceFetcher(StockFetcher):
             try:
 
                 yfTicker = yf.Ticker(ticker)
-                print(ticker)
+                # print(ticker)
                 shares_outstanding = yfTicker.info.get("sharesOutstanding", 0)
 
                 series_outstanding[ticker] = shares_outstanding

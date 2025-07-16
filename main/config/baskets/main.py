@@ -5,9 +5,9 @@ from config.baskets.nikkei import NIKKEI
 from config.baskets.SP500 import SP500
 
 BASKETS = [
+    {"NASDAQ": NADAQ},
     {"DAX": DAX40},
     {"EURO_STOX": EUROPE_STOX_600},
-    {"NASDAQ": NADAQ},
     {"NIKKEY": NIKKEI},
     {"SP500": SP500},
 ]
