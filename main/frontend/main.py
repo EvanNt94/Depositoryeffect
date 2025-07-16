@@ -237,8 +237,9 @@ class MainFrame(tk.Frame):
         diversifikations = [1, 10, 20]
         frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
         strategien = list(
-            filter(lambda x: x["name"] != "growth" or x["name" != "kgv"], strategies)
+            filter(lambda x: x["name"] != "growth" or x["name"] != "kgv", strategies)
         )
+        print("simulate")
         for basket in BASKETS:
             for dispogrenze in dispogrenzen:
                 for frequency in frequenz:
@@ -253,7 +254,10 @@ class MainFrame(tk.Frame):
                                 diversifikation,
                                 dispogrenze,
                             )
-                            self.update(basket.values()[0], basket.keys()[0], parameter)
+
+                            key = next(iter(basket))
+                            print(key)
+                            self.update(basket[key], key, parameter)
 
     def update(self, tickers, basekt_str, parameter):
         self.plot_matplit_vor_update()
@@ -316,12 +320,14 @@ class MainFrame(tk.Frame):
         # Beispiel: Plot je nach Auswahl
         # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
 
-        basketStr = self.dropdown2.get()
-        tickers = list(
-            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
-        )[0]
-        parameter = self.get_parameter()
-        self.update(tickers, basketStr, parameter)
+        self.simulate()
+
+        # basketStr = self.dropdown2.get()
+        # tickers = list(
+        #    list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
+        # )[0]
+        # parameter = self.get_parameter()
+        # self.update(tickers, basketStr, parameter)
 
         # --- 4. Event-Handler-Funktion definieren ---
 
