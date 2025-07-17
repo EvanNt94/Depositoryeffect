@@ -136,7 +136,7 @@ class MainFrame(tk.Frame):
         root.mainloop()
 
     def plot_normal_strategy(self, parameter: Parameter):
-        portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
+        portfolio = Portfolio(parameter.amount)
 
         strategy: Strategy = parameter.strategy["strategy"]
         strategy.set_StockFetcher(self.stock_exchange)
@@ -151,7 +151,7 @@ class MainFrame(tk.Frame):
         )
 
     def plot_dispo_strategy(self, parameter: Parameter):
-        portfolio = Portfolio(amount_start=parameter.amount)
+        portfolio = Portfoliodispo(parameter.amount, parameter.anzahlAktien)
 
         strategy = parameter.strategy["strategy"]
         strategy.set_StockFetcher(self.stock_exchange)
@@ -281,7 +281,6 @@ class MainFrame(tk.Frame):
         self.plot_buy_and_hold_weighted_strategy(parameter)
         self.plot_buy_and_hold_unweighted_strategy(parameter)
 
-        self.normalSimulator
         dd = {
             "config": str(parameter),
             "normal_metrics": (
