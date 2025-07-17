@@ -37,7 +37,6 @@ class MainFrame(tk.Frame):
         self.dispoSimulator: Simulator = None
         self.buyHoldSimulator: Simulator = None
         self.start_plot()
-        self.simulate()
 
     def start_plot(self):
         root = tk.Tk()
@@ -110,9 +109,15 @@ class MainFrame(tk.Frame):
 
         # Button
         button = tk.Button(
-            control_frame, text="Simulieren", command=self.plot_aktualisieren
+            control_frame, text="Ausführen", command=self.plot_aktualisieren
         )
         button.pack(pady=10)
+        self.ausführen_button = button
+
+        # Button
+        button = tk.Button(control_frame, text="Simulieren", command=self.simulate)
+        button.pack(pady=10)
+        self.simulieren_button = button
 
         # Matplotlib-Figure im linken Frame
         self.fig, self.ax = plt.subplots(figsize=(5, 4))
@@ -241,6 +246,16 @@ class MainFrame(tk.Frame):
         )
         print("simulate")
         for basket in BASKETS:
+            key = next(iter(basket))
+            tickers = basket[key]
+            stockexchange = FetchStock(
+                tickers,
+                "2020-01-01",
+                "2025-01-01",
+                YFinanceFetcher(),
+            )
+            self.stock_exchange = stockexchange
+            stockexchange.fetch_data()
             for dispogrenze in dispogrenzen:
                 for frequency in frequenz:
                     for diversifikation in diversifikations:
@@ -254,21 +269,11 @@ class MainFrame(tk.Frame):
                                 diversifikation,
                                 dispogrenze,
                             )
-
-                            key = next(iter(basket))
-                            print(key)
-                            self.update(basket[key], key, parameter)
+                            self.update(tickers, key, parameter)
 
     def update(self, tickers, basekt_str, parameter):
         self.plot_matplit_vor_update()
-        stockexchange = FetchStock(
-            tickers,
-            parameter.start_date,
-            parameter.end_date,
-            YFinanceFetcher(),
-        )
-        self.stock_exchange = stockexchange
-        data = stockexchange.fetch_data()
+
         # data.to_csv()
 
         self.plot_normal_strategy(parameter)
@@ -320,14 +325,20 @@ class MainFrame(tk.Frame):
         # Beispiel: Plot je nach Auswahl
         # tickers = BASKETS["Nasdaq 100 Tech-Stocks"]
 
-        self.simulate()
-
-        # basketStr = self.dropdown2.get()
-        # tickers = list(
-        #    list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
-        # )[0]
-        # parameter = self.get_parameter()
-        # self.update(tickers, basketStr, parameter)
+        basketStr = self.dropdown2.get()
+        tickers = list(
+            list(filter(lambda x: list(x.keys())[0] == basketStr, BASKETS))[0].values()
+        )[0]
+        parameter = self.get_parameter()
+        stockexchange = FetchStock(
+            tickers,
+            parameter.start_date,
+            parameter.end_date,
+            YFinanceFetcher(),
+        )
+        self.stock_exchange = stockexchange
+        stockexchange.fetch_data()
+        self.update(tickers, basketStr, parameter)
 
         # --- 4. Event-Handler-Funktion definieren ---
 

@@ -37,8 +37,12 @@ class Parameter:
             self.frequency = 1
         if start_date == "":
             self.start_date = "2020-01-01"
+        else:
+            self.start_date = start_date
         if end_date == "":
             self.end_date = "2025-01-01"
+        else:
+            self.end_date = end_date
 
     def __str__(self):
         return f"Start-Date: {self.start_date}, end date: {self.end_date}, amount: {self.amount}, frequency: {self.frequency}, strategy: {self.strategy}, AnzahlAktien: {self.anzahlAktien}, Dispogrenze: {self.dispoGrenze}"
