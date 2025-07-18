@@ -1,0 +1,57 @@
+{
+    "avg_dispo_metrics": {
+        "durchschnittliche_rendite": 1.3951020799888865,
+        "effektive_rendite": 0.6016337459878829,
+        "sharpe_ratio": 1.1746931499593594,
+        "max_drawdown": -0.663350964400841,
+        "sigma_daily": 0.03233479285532757,
+        "performance_gap": -0.01062711548942663,
+        "winner_quote": 0.0
+    },
+    "avg_normal_metrics": {
+        "durchschnittliche_rendite": 1.4392007056169984,
+        "effektive_rendite": 0.6122608614773095,
+        "sharpe_ratio": 1.094382805612071,
+        "max_drawdown": -0.6004425375114346,
+        "sigma_daily": 0.0375868493546868,
+        "performance_gap": 0.01062711548942663,
+        "winner_quote": 1
+    },
+    "data": [
+        {
+            "start_year": 2020,
+            "end_year": 2024,
+            "normal_metrics": {
+                "start_amount": 1000,
+                "end_amount": 6756.802822467994,
+                "sigma_daily": 0.0375868493546868,
+                "sharpe_ratio": 1.094382805612071,
+                "max_drawdown": -0.6004425375114346,
+                "result": {
+                    "durchschnittliche_rendite": 1.4392007056169984,
+                    "effektive_rendite": 0.6122608614773095,
+                    "sharpe_ratio": 1.094382805612071,
+                    "max_drawdown": -0.6004425375114346,
+                    "sigma_daily": 0.0375868493546868
+                }
+            },
+            "dispo_metrics": {
+                "start_amount": 1000,
+                "end_amount": 6580.408319955546,
+                "sigma_daily": 0.03233479285532757,
+                "sharpe_ratio": 1.1746931499593594,
+                "max_drawdown": -0.663350964400841,
+                "result": {
+                    "durchschnittliche_rendite": 1.3951020799888865,
+                    "effektive_rendite": 0.6016337459878829,
+                    "sharpe_ratio": 1.1746931499593594,
+                    "max_drawdown": -0.663350964400841,
+                    "sigma_daily": 0.03233479285532757
+                }
+            },
+            "performance_gap": -0.01062711548942663,
+            "winner": "normal",
+            "name": "AA-1 DG-0 freq_1 str Growth"
+        }
+    ]
+}

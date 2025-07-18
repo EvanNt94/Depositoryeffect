@@ -1,0 +1,57 @@
+{
+    "avg_dispo_metrics": {
+        "durchschnittliche_rendite": 0.3810077691584096,
+        "effektive_rendite": 0.09872550179706008,
+        "sharpe_ratio": 5.724146766674666,
+        "max_drawdown": -0.5858339732687251,
+        "sigma_daily": 0.18653190176180562,
+        "performance_gap": -0.008151559911712791,
+        "winner_quote": 0.0
+    },
+    "avg_normal_metrics": {
+        "durchschnittliche_rendite": 0.46645944882043877,
+        "effektive_rendite": 0.10687706170877287,
+        "sharpe_ratio": 6.127677830578309,
+        "max_drawdown": -0.4451278201192695,
+        "sigma_daily": 0.1615365964724065,
+        "performance_gap": 0.008151559911712791,
+        "winner_quote": 1
+    },
+    "data": [
+        {
+            "start_year": 2000,
+            "end_year": 2025,
+            "normal_metrics": {
+                "start_amount": 1000,
+                "end_amount": 12661.48622051097,
+                "sigma_daily": 0.1615365964724065,
+                "sharpe_ratio": 6.127677830578309,
+                "max_drawdown": -0.4451278201192695,
+                "result": {
+                    "durchschnittliche_rendite": 0.46645944882043877,
+                    "effektive_rendite": 0.10687706170877287,
+                    "sharpe_ratio": 6.127677830578309,
+                    "max_drawdown": -0.4451278201192695,
+                    "sigma_daily": 0.1615365964724065
+                }
+            },
+            "dispo_metrics": {
+                "start_amount": 1000,
+                "end_amount": 10525.19422896024,
+                "sigma_daily": 0.18653190176180562,
+                "sharpe_ratio": 5.724146766674666,
+                "max_drawdown": -0.5858339732687251,
+                "result": {
+                    "durchschnittliche_rendite": 0.3810077691584096,
+                    "effektive_rendite": 0.09872550179706008,
+                    "sharpe_ratio": 5.724146766674666,
+                    "max_drawdown": -0.5858339732687251,
+                    "sigma_daily": 0.18653190176180562
+                }
+            },
+            "performance_gap": -0.008151559911712791,
+            "winner": "normal",
+            "name": "AA-10 DG-0 freq_120 str RSI Period"
+        }
+    ]
+}

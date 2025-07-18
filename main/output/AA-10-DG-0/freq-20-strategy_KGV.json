@@ -1,0 +1,57 @@
+{
+    "avg_dispo_metrics": {
+        "durchschnittliche_rendite": 0.31105596878633096,
+        "effektive_rendite": 0.2239580825217069,
+        "sharpe_ratio": 4.724105981787468,
+        "max_drawdown": -0.1719613680921827,
+        "sigma_daily": 0.052258807525551,
+        "performance_gap": 0.07851006629429391,
+        "winner_quote": 1.0
+    },
+    "avg_normal_metrics": {
+        "durchschnittliche_rendite": 0.18036956022311335,
+        "effektive_rendite": 0.145448016227413,
+        "sharpe_ratio": 2.4833397883056763,
+        "max_drawdown": -0.5100645872694003,
+        "sigma_daily": 0.10528703314782159,
+        "performance_gap": -0.07851006629429391,
+        "winner_quote": 0
+    },
+    "data": [
+        {
+            "start_year": 2020,
+            "end_year": 2024,
+            "normal_metrics": {
+                "start_amount": 1000,
+                "end_amount": 1721.4782408924534,
+                "sigma_daily": 0.10528703314782159,
+                "sharpe_ratio": 2.4833397883056763,
+                "max_drawdown": -0.5100645872694003,
+                "result": {
+                    "durchschnittliche_rendite": 0.18036956022311335,
+                    "effektive_rendite": 0.145448016227413,
+                    "sharpe_ratio": 2.4833397883056763,
+                    "max_drawdown": -0.5100645872694003,
+                    "sigma_daily": 0.10528703314782159
+                }
+            },
+            "dispo_metrics": {
+                "start_amount": 1000,
+                "end_amount": 2244.2238751453237,
+                "sigma_daily": 0.052258807525551,
+                "sharpe_ratio": 4.724105981787468,
+                "max_drawdown": -0.1719613680921827,
+                "result": {
+                    "durchschnittliche_rendite": 0.31105596878633096,
+                    "effektive_rendite": 0.2239580825217069,
+                    "sharpe_ratio": 4.724105981787468,
+                    "max_drawdown": -0.1719613680921827,
+                    "sigma_daily": 0.052258807525551
+                }
+            },
+            "performance_gap": 0.07851006629429391,
+            "winner": "dispo",
+            "name": "AA-10 DG-0 freq_20 str KGV"
+        }
+    ]
+}

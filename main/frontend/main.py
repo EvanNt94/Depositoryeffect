@@ -247,7 +247,12 @@ class MainFrame(tk.Frame):
         # Zeitraum fix 2000-2024
         dispogrenzen = [0, 2, 5]
         diversifikations = [1, 10, 20]
-        frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
+        frequenz = [
+            "1 mal am Tag",
+            "1 mal in der  Woche",
+            "Alle 4 Wochen",
+            "Alle 6 Monate",
+        ]
         strategien = list(
             filter(lambda x: x["name"] != "growth" and x["name"] != "kgv", strategies)
         )

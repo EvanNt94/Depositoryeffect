@@ -1,0 +1,92 @@
+{
+    "avg_dispo_metrics": {
+        "durchschnittliche_rendite": 10.67036314169625,
+        "effektive_rendite": 0.1713893459976873,
+        "sharpe_ratio": 3.184608566496112,
+        "max_drawdown": -0.4369199051465854,
+        "sigma_daily": 0.06273099974365347,
+        "performance_gap": -0.023524074453035282,
+        "winner_quote": 0.5
+    },
+    "avg_normal_metrics": {
+        "durchschnittliche_rendite": 26.561884808929566,
+        "effektive_rendite": 0.19491342045072257,
+        "sharpe_ratio": 3.447360717691721,
+        "max_drawdown": -0.5139090294537609,
+        "sigma_daily": 0.06723494015416838,
+        "performance_gap": 0.023524074453035282,
+        "winner_quote": 1
+    },
+    "data": [
+        {
+            "start_year": 2000,
+            "end_year": 2025,
+            "normal_metrics": {
+                "start_amount": 1000,
+                "end_amount": 3960.798996059082,
+                "sigma_daily": 0.053061770566210066,
+                "sharpe_ratio": 1.7194498769150197,
+                "max_drawdown": -0.5635484771808685,
+                "result": {
+                    "durchschnittliche_rendite": 0.11843195984236328,
+                    "effektive_rendite": 0.05660171709870121,
+                    "sharpe_ratio": 1.7194498769150197,
+                    "max_drawdown": -0.5635484771808685,
+                    "sigma_daily": 0.053061770566210066
+                }
+            },
+            "dispo_metrics": {
+                "start_amount": 1000,
+                "end_amount": 4039.5889113372787,
+                "sigma_daily": 0.04223970705627428,
+                "sharpe_ratio": 1.9342416949888754,
+                "max_drawdown": -0.4422305482630352,
+                "result": {
+                    "durchschnittliche_rendite": 0.12158355645349114,
+                    "effektive_rendite": 0.05743452728318732,
+                    "sharpe_ratio": 1.9342416949888754,
+                    "max_drawdown": -0.4422305482630352,
+                    "sigma_daily": 0.04223970705627428
+                }
+            },
+            "performance_gap": 0.0008328101844861102,
+            "winner": "dispo",
+            "name": "AA-10 DG-0 freq_20 str Low"
+        },
+        {
+            "start_year": 2000,
+            "end_year": 2025,
+            "normal_metrics": {
+                "start_amount": 1000,
+                "end_amount": 1326133.4414504191,
+                "sigma_daily": 0.0814081097421267,
+                "sharpe_ratio": 5.175271558468422,
+                "max_drawdown": -0.4642695817266534,
+                "result": {
+                    "durchschnittliche_rendite": 53.00533765801677,
+                    "effektive_rendite": 0.33322512380274394,
+                    "sharpe_ratio": 5.175271558468422,
+                    "max_drawdown": -0.4642695817266534,
+                    "sigma_daily": 0.0814081097421267
+                }
+            },
+            "dispo_metrics": {
+                "start_amount": 1000,
+                "end_amount": 531478.5681734752,
+                "sigma_daily": 0.08322229243103266,
+                "sharpe_ratio": 4.434975438003349,
+                "max_drawdown": -0.43160926203013555,
+                "result": {
+                    "durchschnittliche_rendite": 21.21914272693901,
+                    "effektive_rendite": 0.28534416471218726,
+                    "sharpe_ratio": 4.434975438003349,
+                    "max_drawdown": -0.43160926203013555,
+                    "sigma_daily": 0.08322229243103266
+                }
+            },
+            "performance_gap": -0.047880959090556674,
+            "winner": "normal",
+            "name": "AA-10 DG-0 freq_20 str Low"
+        }
+    ]
+}
