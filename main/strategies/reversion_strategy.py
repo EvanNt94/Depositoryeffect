@@ -34,7 +34,7 @@ class ReversionStrategy(Strategy):
             axis=1,
             keys=["Momentum", "Close"],
         )
-
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="Momentum", ascending=True
         )

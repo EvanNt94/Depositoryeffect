@@ -39,6 +39,8 @@ class BuyHoldStrategy(Strategy):
         concatiniert_ergebnis["Market Cap"] = (
             concatiniert_ergebnis["Close"] * concatiniert_ergebnis["Outstanding Shares"]
         )
+        
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
 
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="Market Cap", ascending=False

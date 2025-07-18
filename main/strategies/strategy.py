@@ -20,6 +20,11 @@ class Strategy:
             "Bitte generate_signals() in Subklasse implementieren."
         )
 
+    def remove_nan_values(Self, df: pd.DataFrame) -> pd.DataFrame:
+        # Remove all rows with any NaN values
+        df_clean = df.dropna()
+        return df_clean
+
     def sort_stocks(self, start_date, df):
         print("in sort stocks")
 

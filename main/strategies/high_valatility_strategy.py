@@ -35,6 +35,7 @@ class HighValatilityStrategy(Strategy):
             keys=["High-Volatility", "Close"],
         )
 
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="High-Volatility", ascending=False
         )

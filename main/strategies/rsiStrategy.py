@@ -43,6 +43,8 @@ class RSIStrategy(Strategy):
         rsi_df = pd.Series(rsi_data, name="RSI")
         rsi_df.index = pd.MultiIndex.from_product([["Close"], rsi_df.index])
         concatiniert_ergebnis["RSI"] = rsi_df
+
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="RSI", ascending=True
         )

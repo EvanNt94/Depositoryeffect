@@ -43,7 +43,7 @@ class KGVStrategy(Strategy):
         concatiniert_ergebnis["KGV"] = (
             concatiniert_ergebnis["Close"] / concatiniert_ergebnis["eps"]
         )
-
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="KGV", ascending=True
         )

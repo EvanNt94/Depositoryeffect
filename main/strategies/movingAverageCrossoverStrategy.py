@@ -59,7 +59,7 @@ class MovingAverageCrossoverStrategy(Strategy):
         )
 
         concatiniert_ergebnis["Signal"] = signal_series
-
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="Signal", ascending=False
         )

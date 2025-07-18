@@ -33,7 +33,7 @@ class RandomStrategy(Strategy):
         )
 
         concatiniert_ergebnis["Random"] = np.random.rand(len(concatiniert_ergebnis))
-
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="Random", ascending=False
         )

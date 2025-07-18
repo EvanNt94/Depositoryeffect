@@ -42,6 +42,8 @@ class GrowthStrategy(Strategy):
 
         concatiniert_ergebnis["Growth"] = series
 
+        concatiniert_ergebnis = self.remove_nan_values(concatiniert_ergebnis)
+
         concatiniert_ergebnis = concatiniert_ergebnis.sort_values(
             by="Growth", ascending=False
         )
