@@ -164,7 +164,9 @@ def avg_metrics(data_list):
     dispo_avg["winner_quote"] = winner_dispo_count / (
         winner_dispo_count + winner_normal_count
     )
-    normal_avg["winner_quote"] = winner_normal_count
+    normal_avg["winner_quote"] = winner_normal_count / (
+        winner_dispo_count + winner_normal_count
+    )
     return {"avg_dispo_metrics": dispo_avg, "avg_normal_metrics": normal_avg}
 
 
