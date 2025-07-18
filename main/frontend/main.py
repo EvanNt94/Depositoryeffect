@@ -245,13 +245,15 @@ class MainFrame(tk.Frame):
             filter(lambda x: x["name"] != "growth" or x["name"] != "kgv", strategies)
         )
         print("simulate")
+        start_date = "2000-01-01"
+        end_date = "2025-01-01"
         for basket in BASKETS:
             key = next(iter(basket))
             tickers = basket[key]
             stockexchange = FetchStock(
                 tickers,
-                "2020-01-01",
-                "2025-01-01",
+                start_date,
+                end_date,
                 YFinanceFetcher(),
             )
             self.stock_exchange = stockexchange
@@ -261,8 +263,8 @@ class MainFrame(tk.Frame):
                     for diversifikation in diversifikations:
                         for strategy in strategien:
                             parameter = Parameter(
-                                "",
-                                "",
+                                start_date,
+                                end_date,
                                 "",
                                 frequency,
                                 strategy,
