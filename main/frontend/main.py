@@ -119,6 +119,13 @@ class MainFrame(tk.Frame):
         button.pack(pady=10)
         self.simulieren_button = button
 
+        # Button
+        button = tk.Button(
+            control_frame, text="Simulieren KGV", command=self.simulate_kgv_growth
+        )
+        button.pack(pady=10)
+        self.simulieren_button = button
+
         # Matplotlib-Figure im linken Frame
         self.fig, self.ax = plt.subplots(figsize=(5, 4))
         plt.xticks(rotation=45, ha="right")
@@ -247,6 +254,45 @@ class MainFrame(tk.Frame):
         print("simulate")
         start_date = "2000-01-01"
         end_date = "2025-01-01"
+        for basket in BASKETS:
+            key = next(iter(basket))
+            tickers = basket[key]
+            stockexchange = FetchStock(
+                tickers,
+                start_date,
+                end_date,
+                YFinanceFetcher(),
+            )
+            self.stock_exchange = stockexchange
+            stockexchange.fetch_data()
+            for dispogrenze in dispogrenzen:
+                for frequency in frequenz:
+                    for diversifikation in diversifikations:
+                        for strategy in strategien:
+                            parameter = Parameter(
+                                start_date,
+                                end_date,
+                                "",
+                                frequency,
+                                strategy,
+                                diversifikation,
+                                dispogrenze,
+                            )
+                            self.update(tickers, key, parameter)
+
+    def simulate_kgv_growth(self):
+
+        # Alle baskets
+        # Zeitraum fix 2000-2024
+        dispogrenzen = [0, 2, 5]
+        diversifikations = [1, 10, 20]
+        frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
+        strategien = list(
+            filter(lambda x: x["name"] == "growth" or x["name"] == "kgv", strategies)
+        )
+        print("simulate")
+        start_date = "2020-01-01"
+        end_date = "2024-01-01"
         for basket in BASKETS:
             key = next(iter(basket))
             tickers = basket[key]
