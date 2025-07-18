@@ -276,10 +276,10 @@ class MainFrame(tk.Frame):
 
         # data.to_csv()
 
-        # self.plot_normal_strategy(parameter)
+        self.plot_normal_strategy(parameter)
         self.plot_dispo_strategy(parameter)
-        # self.plot_buy_and_hold_weighted_strategy(parameter)
-        # self.plot_buy_and_hold_unweighted_strategy(parameter)
+        self.plot_buy_and_hold_weighted_strategy(parameter)
+        self.plot_buy_and_hold_unweighted_strategy(parameter)
 
         dd = {
             "config": str(parameter),
