@@ -141,8 +141,7 @@ class Portfoliodispo(Portfolio):
             dropped_table = True
             current_amount_value -= amount_to_invest
 
-        self.update_weight(df_adjusted)
-        print(df_adjusted)
+        df_adjusted = self.update_weight(df_adjusted)
 
         alle_aktien_untergewichten = list(
             map(
@@ -233,12 +232,11 @@ class Portfoliodispo(Portfolio):
             "amount_buy": self.current_amount_value,
             "date": date.strftime("%Y-%m-%d"),
         }
-        
-        
 
     def update_weight(self, df):
         df["Weight"] = df["Market Cap"] / df["Market Cap"].sum()
         df = df.sort_values(by="Weight", ascending=False)
+        return df
 
     def sell_old_stock(self, invest, df, date):
         ticker = invest["ticker"]
