@@ -141,7 +141,12 @@ class MainFrame(tk.Frame):
         strategy: Strategy = parameter.strategy["strategy"]
         strategy.set_StockFetcher(self.stock_exchange)
         strategy.set_parameter(parameter)
-        simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+        if isinstance(strategy, RandomStrategy):
+            simulator = SimulatorRandom(
+                self.stock_exchange, strategy, parameter, portfolio
+            )
+        else:
+            simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.normalSimulator = simulator
         self.updateplot(
@@ -157,12 +162,7 @@ class MainFrame(tk.Frame):
         strategy.set_StockFetcher(self.stock_exchange)
         strategy.set_parameter(parameter)
 
-        if isinstance(strategy, RandomStrategy):
-            simulator = SimulatorRandom(
-                self.stock_exchange, strategy, parameter, portfolio
-            )
-        else:
-            simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+        simulator = SimulatorDispo(self.stock_exchange, strategy, parameter, portfolio)
         simulator.simulate()
         self.dispoSimulator = simulator
         self.updateplot(

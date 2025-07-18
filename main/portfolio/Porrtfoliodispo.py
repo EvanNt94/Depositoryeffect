@@ -233,6 +233,8 @@ class Portfoliodispo(Portfolio):
             "amount_buy": self.current_amount_value,
             "date": date.strftime("%Y-%m-%d"),
         }
+        
+        
 
     def update_weight(self, df):
         df["Weight"] = df["Market Cap"] / df["Market Cap"].sum()
