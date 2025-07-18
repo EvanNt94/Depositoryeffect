@@ -1,4 +1,4 @@
-EURO600 = ['SOF.BR', 'CLNX.MC', 'AAL.L', 'ANDR.VI', 'AKRBP.OL', 'SIE.DE', 'CPR.MI', 'TUI1.DE', 'EOAN.DE', 'KBC.BR', 'LHA.DE', 
+EUROPE_STOX_600 = ['SOF.BR', 'CLNX.MC', 'AAL.L', 'ANDR.VI', 'AKRBP.OL', 'SIE.DE', 'CPR.MI', 'TUI1.DE', 'EOAN.DE', 'KBC.BR', 'LHA.DE', 
            'TECN.SW', 'EMG.L', 'STMMI.MI', 'INDU-C.ST', 'HOLM-B.ST', 'WTB.L', 'AUTO.L', 'IBE.MC', 'NIBE-B.ST', 'JDEP.AS', 'COFB.BR', 
            'BKT.MC', 'FABG.ST', 'SK.PA', 'HO.PA', 'BIRG.IR', 'AFX.DE', 'THULE.ST', 'KGH.WA', 'SLHN.SW', 'DIM.PA', 'ANE.MC', 'DSY.PA', 
            'HLN.L', 'BVI.PA', 'RTO.L', 'TKWY.AS', 'COLO-B.CO', 'EVD.DE', 'P911.DE', 'ELIS.PA', 'CNA.L', 'SKF-B.ST', 'ABN.AS', 'FRO.OL', 
