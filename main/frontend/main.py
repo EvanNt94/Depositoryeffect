@@ -249,7 +249,7 @@ class MainFrame(tk.Frame):
         diversifikations = [1, 10, 20]
         frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
         strategien = list(
-            filter(lambda x: x["name"] != "growth" or x["name"] != "kgv", strategies)
+            filter(lambda x: x["name"] != "growth" and x["name"] != "kgv", strategies)
         )
         print("simulate")
         start_date = "2000-01-01"
@@ -291,7 +291,7 @@ class MainFrame(tk.Frame):
             filter(lambda x: x["name"] == "growth" or x["name"] == "kgv", strategies)
         )
         print("simulate")
-        start_date = "2020-01-01"
+        start_date = "2000-01-01"
         end_date = "2024-01-01"
         for basket in BASKETS:
             key = next(iter(basket))
