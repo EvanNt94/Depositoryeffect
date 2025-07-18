@@ -33,6 +33,8 @@ class Parameter:
             self.frequency = 5
         elif frequency == "Alle 4 Wochen":
             self.frequency = 20
+        elif frequency == "Alle 6 Monate":
+            self.frequency = 120
         else:
             self.frequency = 1
         if start_date == "":

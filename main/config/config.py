@@ -31,6 +31,7 @@ FREQUENCY = [
     {"id": "twice", "name": "1 mal alle 2 Tag"},
     {"id": "once_week", "name": "1 mal in der  Woche"},
     {"id": "once_month", "name": "Alle 4 Wochen"},
+    {"id": "once_6_month", "name": "Alle 6 Monate"},
 ]
 
 # --- 1. Große Baskets (repräsentative Auswahl, Stand 2024) ---
