@@ -1,6 +1,6 @@
 import pandas as pd
-from portfolio.Portfolio import Portfolio
 from Logger import Logger
+from portfolio.Portfolio import Portfolio
 
 
 class Portfoliodispo(Portfolio):
@@ -62,6 +62,7 @@ class Portfoliodispo(Portfolio):
         aktien_darf_nicht_verkauft_werden = []
         aktien_dürfen_unter_oder_übergewichtet_werden = []
         ticker_from_last_buy = list(map(lambda x: x["ticker"], invest_list))
+        aktien_dürfen_gekauft_werden = []
 
         for previous_invest in invest_list:
             ticker = previous_invest["ticker"]
@@ -83,9 +84,9 @@ class Portfoliodispo(Portfolio):
                 # Aktie ist im Minus
                 if initial_price_buy > price_ticker_today:
                     # Nichts passiert
-                    if actual_weight > df.loc[ticker, "Weight"]:
+                    if actual_weight >= df.loc[ticker, "Weight"]:
                         aktien_darf_nicht_verkauft_werden.append(previous_invest.copy())
-                    # Aktie wird gekauft
+                    # Aktie wird übbergewichtet
                     else:
                         dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
                         if dif_weight > 0:
@@ -98,7 +99,17 @@ class Portfoliodispo(Portfolio):
                             )
                 else:
                     dif_weight = df_adjusted.loc[ticker, "Weight"] - actual_weight
-                    if dif_weight > 0:
+                    if dif_weight == 0:
+                        amount_selled = self.sell_old_stock(
+                            previous_invest, df_full, date
+                        )
+                        previous_invest["selled_amount"] = amount_selled
+                        previous_invest["price_sell"] = price_ticker_today
+                        previous_invest["date_sell"] = date.strftime("%Y-%m-%d")
+                        free_amount += amount_selled
+                        aktien_dürfen_gekauft_werden.append(ticker)
+                        # Aktie wird komplett verkauft und neu gekauft
+                    elif dif_weight > 0:
                         aktien_dürfen_unter_oder_übergewichtet_werden.append(
                             {"invest": previous_invest.copy(), "gewicht": 1}
                         )
@@ -198,7 +209,10 @@ class Portfoliodispo(Portfolio):
 
         # Kaufe Aktien
         for ticker_kaufe_aktien in df_adjusted.index:
-            if ticker_kaufe_aktien not in ticker_from_last_buy:
+            if (
+                ticker_kaufe_aktien not in ticker_from_last_buy
+                or ticker_kaufe_aktien in aktien_dürfen_gekauft_werden
+            ):
                 weight_ticker = df_adjusted.loc[ticker_kaufe_aktien, "Weight"]
                 price_ticker = df_adjusted.loc[ticker_kaufe_aktien, "Close"]
                 amount_to_invest = current_amount_value * weight_ticker
