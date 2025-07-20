@@ -9,6 +9,7 @@ from strategies.reversion_strategy import ReversionStrategy
 from strategies.rsiStrategy import RSIStrategy
 
 strategies = [
+    {"name": "random", "strategy": RandomStrategy()},
     {
         "name": "momentum",
         "strategy": MomentumStrategy(),
@@ -18,7 +19,7 @@ strategies = [
     {"name": "mean_reversion", "strategy": ReversionStrategy()},
     {"name": "moving_average_crossover", "strategy": MovingAverageCrossoverStrategy()},
     {"name": "RSI", "strategy": RSIStrategy()},
-    {"name": "random", "strategy": RandomStrategy()},
+  
     {
         "name": "growth",
         "strategy": GrowthStrategy(),

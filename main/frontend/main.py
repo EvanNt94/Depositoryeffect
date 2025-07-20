@@ -36,7 +36,7 @@ class MainFrame(tk.Frame):
         self.normalSimulator: Simulator = None
         self.dispoSimulator: Simulator = None
         self.buyHoldSimulator: Simulator = None
-        self.buyHoldSimulatorUnweighted: Simulator = simulator
+        self.buyHoldSimulatorUnweighted: Simulator = None
         self.start_plot()
 
     def start_plot(self):
@@ -247,19 +247,22 @@ class MainFrame(tk.Frame):
 
         # Alle baskets
         # Zeitraum fix 2000-2024
-        dispogrenzen = [0, 2, 5]
-        diversifikations = [1, 10, 20]
+        dispogrenzen = [0
+                        #, 2
+                        ]
+        diversifikations = [1, 20]
         frequenz = [
             "1 mal am Tag",
-            "1 mal in der  Woche",
-            "Alle 4 Wochen",
-            "Alle 6 Monate",
+           # "Alle 4 Wochen",
+           # "Alle 6 Monate",
         ]
+       
         strategien = list(
             filter(lambda x: x["name"] != "growth" and x["name"] != "kgv", strategies)
         )
+        strategien = [strategies[0]]
         print("simulate")
-        start_date = "2000-01-01"
+        start_date = "2020-01-01"
         end_date = "2025-01-01"
         for basket in BASKETS:
             key = next(iter(basket))
@@ -291,9 +294,9 @@ class MainFrame(tk.Frame):
 
         # Alle baskets
         # Zeitraum fix 2000-2024
-        dispogrenzen = [0, 2, 5]
-        diversifikations = [1, 10, 20]
-        frequenz = ["1 mal am Tag", "1 mal in der  Woche", "Alle 4 Wochen"]
+        dispogrenzen = [0, 2]
+        diversifikations = [1, 20]
+        frequenz = ["1 mal am Tag", "Alle 4 Wochen", "Alle 6 Monate"]
         strategien = list(
             filter(lambda x: x["name"] == "growth" or x["name"] == "kgv", strategies)
         )
@@ -331,9 +334,9 @@ class MainFrame(tk.Frame):
 
         # data.to_csv()
 
-        self.plot_normal_strategy(parameter)
-        self.plot_dispo_strategy(parameter)
-        self.plot_buy_and_hold_weighted_strategy(parameter)
+        #self.plot_normal_strategy(parameter)
+        #self.plot_dispo_strategy(parameter)
+        #self.plot_buy_and_hold_weighted_strategy(parameter)
         self.plot_buy_and_hold_unweighted_strategy(parameter)
 
         dd = {
@@ -347,7 +350,7 @@ class MainFrame(tk.Frame):
             "buy_and_hold_metrics": (
                 None if self.buyHoldSimulator is None else self.buyHoldSimulator.metrics
             ),
-            "buy_and_hold_undweightedmetrics": (
+            "buy_and_hold_undweighted_metrics": (
                 None
                 if self.buyHoldSimulatorUnweighted is None
                 else self.buyHoldSimulatorUnweighted.metrics
