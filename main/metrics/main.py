@@ -81,12 +81,30 @@ def read_data(dict):
         ]:
             result_dict["dispo_metrics"][key] = dict["dispo_metrics"][key]
 
+        # DispoMetric:
+        result_dict["buy_and_hold_weighted"] = {}
+
+        for key in [
+            "start_amount",
+            "end_amount",
+            "sigma_daily",
+            "sharpe_ratio",
+            "max_drawdown",
+        ]:
+            result_dict["buy_and_hold_weighted"][key] = dict["buy_and_hold_metrics"][
+                key
+            ]
+
         # Calculate Metric
         result_dict["dispo_metrics"]["result"] = calculate_metric(
             result_dict, result_dict["dispo_metrics"]
         )
         result_dict["normal_metrics"]["result"] = calculate_metric(
             result_dict, result_dict["normal_metrics"]
+        )
+
+        result_dict["buy_and_hold_weighted"]["result"] = calculate_metric(
+            result_dict, result_dict["buy_and_hold_weighted"]
         )
 
         result_dict["performance_gap"] = (
@@ -126,8 +144,10 @@ for datei in json_dateien:
 def avg_metrics(data_list):
     dispo_sum = defaultdict(float)
     normal_sum = defaultdict(float)
+    buy_and_hold_weighted_sum = defaultdict(float)
     dispo_count = 0
     normal_count = 0
+    buy_and_hold_count = 0
 
     winner_dispo_count = 0
     winner_normal_count = 0
@@ -145,6 +165,12 @@ def avg_metrics(data_list):
             normal_sum[key] += normal_result[key]
         normal_count += 1
 
+        # Buy_and_hold
+        buy_and_hold_weighted_result = item["buy_and_hold_weighted"]["result"]
+        for key in buy_and_hold_weighted_result:
+            buy_and_hold_weighted_sum[key] += buy_and_hold_weighted_result[key]
+        buy_and_hold_count += 1
+
         winner = item["winner"]
         if winner == "dispo":
             winner_dispo_count += 1
@@ -153,6 +179,10 @@ def avg_metrics(data_list):
 
     dispo_avg = {key: dispo_sum[key] / dispo_count for key in dispo_sum}
     normal_avg = {key: normal_sum[key] / normal_count for key in normal_sum}
+    buy_and_hold_weighted_avg = {
+        key: buy_and_hold_weighted_sum[key] / buy_and_hold_count
+        for key in buy_and_hold_weighted_sum
+    }
 
     dispo_avg["performance_gap"] = (
         dispo_avg["effektive_rendite"] - normal_avg["effektive_rendite"]
@@ -167,7 +197,11 @@ def avg_metrics(data_list):
     normal_avg["winner_quote"] = winner_normal_count / (
         winner_dispo_count + winner_normal_count
     )
-    return {"avg_dispo_metrics": dispo_avg, "avg_normal_metrics": normal_avg}
+    return {
+        "avg_dispo_metrics": dispo_avg,
+        "avg_normal_metrics": normal_avg,
+        "avg buy_and_hold_weighted_metrics": buy_and_hold_weighted_avg,
+    }
 
 
 # Ausgabe im gewünschten Format + JSON laden, Metriken berechnen und speichern
@@ -181,22 +215,22 @@ for key, freq_dict in gruppen.items():
             result_list_per_strategy = []
             for pfad in pfade:
                 print(f"    {pfad}")
-                try:
-                    with open(pfad, "r", encoding="utf-8") as f:
-                        data = json.load(f)
-                        result = read_data(data)
-                        result_list_per_strategy.append(result)
-                        # print(f"    {result}")
+                # try:
+                with open(pfad, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    result = read_data(data)
+                    result_list_per_strategy.append(result)
+                    # print(f"    {result}")
 
-                        # Output-Pfad bauen:
-                        aa_val = key.split("-")[1]  # z.B. 20
-                        dg_val = key.split("-")[3]  # z.B. 5
-                        result["name"] = (
-                            f"AA-{aa_val} DG-{dg_val} freq_{freq} str {strategy}"
-                        )
+                    # Output-Pfad bauen:
+                    aa_val = key.split("-")[1]  # z.B. 20
+                    dg_val = key.split("-")[3]  # z.B. 5
+                    result["name"] = (
+                        f"AA-{aa_val} DG-{dg_val} freq_{freq} str {strategy}"
+                    )
 
-                except Exception as e:
-                    print(f"    Fehler beim Laden: {e}")
+                # except Exception as e:
+                #    print(f"    Fehler beim Laden: {e}")
             print("  ]")
             # Ergebnis abspeichern als JSON
 

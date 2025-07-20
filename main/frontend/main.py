@@ -36,6 +36,7 @@ class MainFrame(tk.Frame):
         self.normalSimulator: Simulator = None
         self.dispoSimulator: Simulator = None
         self.buyHoldSimulator: Simulator = None
+        self.buyHoldSimulatorUnweighted: Simulator = simulator
         self.start_plot()
 
     def start_plot(self):
@@ -199,6 +200,7 @@ class MainFrame(tk.Frame):
         strategy.set_StockFetcher(self.stock_exchange)
         strategy.set_parameter(parameter)
         simulator = Simulator(self.stock_exchange, strategy, parameter, portfolio)
+        self.buyHoldSimulatorUnweighted = simulator
         simulator.simulate()
         self.updateplot(
             simulator,
