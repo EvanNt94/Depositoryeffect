@@ -347,6 +347,11 @@ class MainFrame(tk.Frame):
             "buy_and_hold_metrics": (
                 None if self.buyHoldSimulator is None else self.buyHoldSimulator.metrics
             ),
+            "buy_and_hold_undweightedmetrics": (
+                None
+                if self.buyHoldSimulatorUnweighted is None
+                else self.buyHoldSimulatorUnweighted.metrics
+            ),
             "performance_diff": (
                 "Ein atrument is None"
                 if self.dispoSimulator is None or self.normalSimulator is None
