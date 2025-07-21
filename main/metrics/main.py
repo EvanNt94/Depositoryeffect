@@ -28,6 +28,9 @@ gruppen = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
 
 def calculate_metric(dict, strategy):
+    print(strategy)
+    if strategy == {}:
+        return None
     calculated_metric = {}
     diff_year = dict["end_year"] - dict["start_year"]
     durchschnittliche_rendite = (
@@ -68,7 +71,8 @@ def read_data(dict):
             "sharpe_ratio",
             "max_drawdown",
         ]:
-            result_dict["normal_metrics"][key] = dict["normal_metrics"][key]
+            if dict["normal_metrics"] != None:
+                result_dict["normal_metrics"][key] = dict["normal_metrics"][key]
 
         # DispoMetric:
         result_dict["dispo_metrics"] = {}
@@ -79,7 +83,8 @@ def read_data(dict):
             "sharpe_ratio",
             "max_drawdown",
         ]:
-            result_dict["dispo_metrics"][key] = dict["dispo_metrics"][key]
+            if dict["dispo_metrics"] != None:
+                result_dict["dispo_metrics"][key] = dict["dispo_metrics"][key]
 
         # DispoMetric:
         result_dict["buy_and_hold_weighted"] = {}
@@ -91,9 +96,22 @@ def read_data(dict):
             "sharpe_ratio",
             "max_drawdown",
         ]:
-            result_dict["buy_and_hold_weighted"][key] = dict["buy_and_hold_metrics"][
-                key
-            ]
+            if dict["buy_and_hold_metrics"] != None:
+                result_dict["buy_and_hold_weighted"][key] = dict["buy_and_hold_metrics"][
+                    key
+                ]
+
+        # Buy and Hold unweighted:
+        result_dict["buy_and_hold_undweighted_metrics"] = {}
+        for key in [
+            "start_amount",
+            "end_amount",
+            "sigma_daily",
+            "sharpe_ratio",
+            "max_drawdown",
+        ]:
+            if dict["buy_and_hold_undweighted_metrics"] != None:
+                result_dict["buy_and_hold_undweighted_metrics"][key] = dict["buy_and_hold_undweighted_metrics"][key]
 
         # Calculate Metric
         result_dict["dispo_metrics"]["result"] = calculate_metric(
@@ -107,17 +125,24 @@ def read_data(dict):
             result_dict, result_dict["buy_and_hold_weighted"]
         )
 
-        result_dict["performance_gap"] = (
-            result_dict["dispo_metrics"]["result"]["effektive_rendite"]
-            - result_dict["normal_metrics"]["result"]["effektive_rendite"]
+        result_dict["buy_and_hold_undweighted_metrics"]["result"] = calculate_metric(
+            result_dict, result_dict["buy_and_hold_undweighted_metrics"]
         )
 
-        if result_dict["performance_gap"] > 0:
-            result_dict["winner"] = "dispo"
-        elif result_dict["performance_gap"] == 0:
-            result_dict["winner"] = "unentschieden"
-        else:
-            result_dict["winner"] = "normal"
+      
+        if result_dict["dispo_metrics"]["result"] != None and result_dict["normal_metrics"]["result"] != None:
+            result_dict["performance_gap"] = (
+                result_dict["dispo_metrics"]["result"]["effektive_rendite"]
+                - result_dict["normal_metrics"]["result"]["effektive_rendite"]
+            )
+
+        if "performance_gap" in result_dict:
+            if result_dict["performance_gap"] > 0:
+                result_dict["winner"] = "dispo"
+            elif result_dict["performance_gap"] == 0:
+                result_dict["winner"] = "unentschieden"
+            else:
+                result_dict["winner"] = "normal"
 
         return result_dict
 
@@ -144,10 +169,12 @@ for datei in json_dateien:
 def avg_metrics(data_list):
     dispo_sum = defaultdict(float)
     normal_sum = defaultdict(float)
-    buy_and_hold_weighted_sum = defaultdict(float)
+    buy_and_hold_weighted_sum = defaultdict(float)#
+    buy_and_hold_unweighted_sum = defaultdict(float)
     dispo_count = 0
     normal_count = 0
     buy_and_hold_count = 0
+    buy_and_hold_unweighted_count = 0
 
     winner_dispo_count = 0
     winner_normal_count = 0
@@ -155,27 +182,38 @@ def avg_metrics(data_list):
     for item in data_list:
         # Dispo
         dispo_result = item["dispo_metrics"]["result"]
-        for key in dispo_result:
-            dispo_sum[key] += dispo_result[key]
-        dispo_count += 1
+        if dispo_result != None:
+            for key in dispo_result:
+                dispo_sum[key] += dispo_result[key]
+            dispo_count += 1
 
         # Normal
         normal_result = item["normal_metrics"]["result"]
-        for key in normal_result:
-            normal_sum[key] += normal_result[key]
-        normal_count += 1
+        if normal_result != None:
+            for key in normal_result:
+                normal_sum[key] += normal_result[key]
+            normal_count += 1
 
         # Buy_and_hold
         buy_and_hold_weighted_result = item["buy_and_hold_weighted"]["result"]
-        for key in buy_and_hold_weighted_result:
-            buy_and_hold_weighted_sum[key] += buy_and_hold_weighted_result[key]
-        buy_and_hold_count += 1
+        if buy_and_hold_weighted_result != None:
+            for key in buy_and_hold_weighted_result:
+                buy_and_hold_weighted_sum[key] += buy_and_hold_weighted_result[key]
+            buy_and_hold_count += 1
 
-        winner = item["winner"]
-        if winner == "dispo":
-            winner_dispo_count += 1
-        elif winner == "normal":
-            winner_normal_count += 1
+        # Buy_and_hold
+        buy_and_hold_unweighted_result = item["buy_and_hold_undweighted_metrics"]["result"]
+        if buy_and_hold_unweighted_result != None:
+            for key in buy_and_hold_unweighted_result:
+                buy_and_hold_unweighted_sum[key] += buy_and_hold_unweighted_result[key]
+            buy_and_hold_unweighted_count += 1
+
+        if "winner" in item:
+            winner = item["winner"]
+            if winner == "dispo":
+                winner_dispo_count += 1
+            elif winner == "normal":
+                winner_normal_count += 1
 
     dispo_avg = {key: dispo_sum[key] / dispo_count for key in dispo_sum}
     normal_avg = {key: normal_sum[key] / normal_count for key in normal_sum}
@@ -183,24 +221,32 @@ def avg_metrics(data_list):
         key: buy_and_hold_weighted_sum[key] / buy_and_hold_count
         for key in buy_and_hold_weighted_sum
     }
+    buy_and_hold_unweighted_avg = {
+        key: buy_and_hold_unweighted_sum[key] / buy_and_hold_unweighted_count
+        for key in buy_and_hold_unweighted_sum
+    }
 
-    dispo_avg["performance_gap"] = (
-        dispo_avg["effektive_rendite"] - normal_avg["effektive_rendite"]
-    )
-    normal_avg["performance_gap"] = (
-        normal_avg["effektive_rendite"] - dispo_avg["effektive_rendite"]
-    )
+    if "effektive_rendite" in dispo_avg:
+        dispo_avg["performance_gap"] = (
+            dispo_avg["effektive_rendite"] - normal_avg["effektive_rendite"]
+        )
+    if "effektive_rendite" in normal_avg:
+        normal_avg["performance_gap"] = (
+            normal_avg["effektive_rendite"] - dispo_avg["effektive_rendite"]
+        )
 
-    dispo_avg["winner_quote"] = winner_dispo_count / (
-        winner_dispo_count + winner_normal_count
-    )
-    normal_avg["winner_quote"] = winner_normal_count / (
-        winner_dispo_count + winner_normal_count
-    )
+    if (winner_dispo_count+winner_normal_count ) != 0:
+        dispo_avg["winner_quote"] = winner_dispo_count / (
+            winner_dispo_count + winner_normal_count
+        )
+        normal_avg["winner_quote"] = winner_normal_count / (
+            winner_dispo_count + winner_normal_count
+        )
     return {
         "avg_dispo_metrics": dispo_avg,
         "avg_normal_metrics": normal_avg,
         "avg buy_and_hold_weighted_metrics": buy_and_hold_weighted_avg,
+        "avg_buy_and_hold_unweighted_metrics": buy_and_hold_unweighted_avg
     }
 
 
